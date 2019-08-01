@@ -1,9 +1,30 @@
 let context, controller, rectangle, loop;
 
-context = document.querySelector("canvas").getContext("2d");
+context = document.getElementById("canvas").getContext("2d");
 
 context.canvas.height = 500;
 context.canvas.width = 1000;
+
+solution1 = {
+    x: 150,
+    y: 90,
+    height: 20,
+    width: 40
+};
+
+solution2 = {
+    x: 500,
+    y: 90,
+    height: 20,
+    width: 40
+};
+
+solution3 = {
+    x: 850,
+    y: 90,
+    height: 20,
+    width: 40
+};
 
 rectangle = {
 
@@ -105,11 +126,31 @@ loop = function () {
     context.moveTo(0, 430);
     context.lineTo(1000, 430);
     context.stroke();
+    context.fillStyle = "#FFFFFF";
+    context.beginPath();
+    context.rect(solution1.x, solution1.y, solution1.width, solution1.height)
+    context.fill()
+    context.strokeStyle = "#202830";
+    context.lineWidth = 4;
+    context.fillStyle = "#FFFFFF";
+    context.beginPath();
+    context.rect(solution2.x, solution2.y, solution2.width, solution2.height)
+    context.fill()
+    context.strokeStyle = "#202830";
+    context.lineWidth = 4;
+    context.fillStyle = "#FFFFFF";
+    context.beginPath();
+    context.rect(solution3.x, solution3.y, solution3.width, solution3.height)
+    context.fill()
+    context.strokeStyle = "#202830";
+    context.lineWidth = 4;
 
     // call update when the browser is ready to draw again
     window.requestAnimationFrame(loop);
 
 };
+
+
 
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
