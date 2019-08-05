@@ -1,157 +1,122 @@
-let context, controller, rectangle, loop;
+function initCanvas() {
+    let ctx = document.getElementById("canvas").getContext("2d")
+    let cW = ctx.canvas.width;
+    let cH = ctx.canvas.height;
+    let enemies = [
 
-context = document.getElementById("canvas").getContext("2d");
-
-context.canvas.height = 500;
-context.canvas.width = 1000;
-
-solution1 = {
-    x: 150,
-    y: 90,
-    height: 20,
-    width: 40
-};
-
-solution2 = {
-    x: 500,
-    y: 90,
-    height: 20,
-    width: 40
-};
-
-solution3 = {
-    x: 850,
-    y: 90,
-    height: 20,
-    width: 40
-};
-
-rectangle = {
-
-    height: 64,
-    jumping: true,
-    width: 64,
-    x: 144, // center of the canvas
-    x_velocity: 0,
-    y: 0,
-    y_velocity: 0
-
-};
-
-controller = {
-
-    left: false,
-    right: false,
-    up: false,
-    keyListener: function (event) {
-
-        let key_state = (event.type == "keydown") ? true : false;
-
-        switch (event.keyCode) {
-
-            case 65: // left key
-                controller.left = key_state;
-                break;
-            case 87: // up key
-                controller.up = key_state;
-                break;
-            case 68: // right key
-                controller.right = key_state;
-                break;
-            case 32:
-                controller.right = key_state;
-
+        {
+            "id": "enemy4",
+            "x": 100,
+            "y": -70,
+            "w": 40,
+            "h": 20
+        },
+        {
+            "id": "enemy5",
+            "x": 325,
+            "y": -70,
+            "w": 40,
+            "h": 20
+        },
+        {
+            "id": "enemy6",
+            "x": 550,
+            "y": -70,
+            "w": 40,
+            "h": 20
         }
+    ];
 
+    function renderEnemies() {
+        for (let i = 0; i < enemies.length; i++) {
+            ctx.fillStyle = "blue";
+            ctx.fillRect(enemies[i].x, enemies[i].y += 1, enemies[i].w, enemies[i].h)
+        }
     }
 
-};
+    function Launcher() {
+        this.y = 280, this.x = cW * .5 - .25, this.w = 50, this.h = 50, this.dir, this.bg = "orange",
+            this.missiles = [];
+        this.render = function () {
+            if (this.dir == "left") {
+                this.x -= 5;
+            } else if (this.dir == "right") {
+                this.x += 5;
+            }
 
-loop = function () {
+            ctx.fillStyle = this.bg;
+            ctx.fillRect(this.x, this.y, this.w, this.h);
+            for (let i = 0; i < this.missiles.length; i++) {
+                let m = this.missiles[i];
+                ctx.fillStyle = m.bg;
+                ctx.fillRect(m.x, m.y -= 5, m.w, m.h);
+                this.hitDetect(this.missiles[i], i);
+                if (m.y <= 0) {
+                    this.missiles.splice(i, 1);
+                }
+            }
+            if (enemies.length == 0) {
+                clearInterval(animateInterval);
 
-    if (controller.up && rectangle.jumping == false) {
+                ctx.fillStyle = "#FC0";
+                ctx.font = "italic bold 36px Arial, sans-serif";
+                ctx.fillText("Level Complete", cW * .5 - 130, 50, 300);
+            }
+        }
+        this.hitDetect = function (m, mi) {
+            for (let i = 0; i < enemies.length; i++) {
+                let e = enemies[i];
+                if (m.x + m.w >= e.x && m.x <= e.x + e.w && m.y >= e.y && m.y <= e.y + e.h) {
+                    this.missiles.splice(this.missiles[mi], 1);
 
-        rectangle.y_velocity -= 50;
-        rectangle.jumping = true;
+                    enemies.splice(i, 1);
 
+                    document.getElementById("status").innerHTML = "You destroyed " + e.id;
+                }
+            }
+        }
     }
 
-    if (controller.left) {
+    let launcher = new Launcher();
 
-        rectangle.x_velocity -= 0.5;
-
+    function animate() {
+        ctx.clearRect(0, 0, cW, cH);
+        launcher.render();
+        renderEnemies();
     }
+    let animateInterval = setInterval(animate, 30);
+    let left_btn = document.getElementById("left_btn");
+    let right_btn = document.getElementById("right_btn");
+    let fire_btn = document.getElementById("fire_btn");
+    left_btn.addEventListener("mousedown", function (event) {
+        launcher.dir = "left"
+    });
+    left_btn.addEventListener("mouseup", function (event) {
+        launcher.dir = "";
+    });
+    right_btn.addEventListener("mousedown", function (event) {
+        launcher.dir = "right";
+    });
+    right_btn.addEventListener("mouseup", function (event) {
+        launcher.dir = "";
+    });
+    fire_btn.addEventListener("mouseup", function (event) {
+        launcher.dir = "";
+    });
+    fire_btn.addEventListener("mousedown", function (event) {
 
-    if (controller.right) {
-
-        rectangle.x_velocity += 0.5;
-
-    }
-
-    rectangle.y_velocity += 1.5; // gravity
-    rectangle.x += rectangle.x_velocity;
-    rectangle.y += rectangle.y_velocity;
-    rectangle.x_velocity *= 0.9; // friction
-    rectangle.y_velocity *= 0.9; // friction
-
-    // if rectangle is falling below floor line
-    if (rectangle.y > 415 - 16 - 32) {
-
-        rectangle.jumping = false;
-        rectangle.y = 415 - 16 - 32;
-        rectangle.y_velocity = 0;
-
-    }
-
-    // if rectangle is going off the left of the screen
-    if (rectangle.x < -32) {
-
-        rectangle.x = 1000;
-
-    } else if (rectangle.x > 1000) { // if rectangle goes past right boundary
-
-        rectangle.x = -32;
-
-    }
-
-    context.fillStyle = "#202020";
-    context.fillRect(0, 0, 1000, 500); // x, y, width, height
-    context.fillStyle = "#ff0000"; // hex for red
-    context.beginPath();
-    context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    context.fill();
-    context.strokeStyle = "#202830";
-    context.lineWidth = 4;
-    context.beginPath();
-    context.moveTo(0, 430);
-    context.lineTo(1000, 430);
-    context.stroke();
-    context.fillStyle = "#FFFFFF";
-    context.beginPath();
-    context.rect(solution1.x, solution1.y, solution1.width, solution1.height)
-    context.fill()
-    context.strokeStyle = "#202830";
-    context.lineWidth = 4;
-    context.fillStyle = "#FFFFFF";
-    context.beginPath();
-    context.rect(solution2.x, solution2.y, solution2.width, solution2.height)
-    context.fill()
-    context.strokeStyle = "#202830";
-    context.lineWidth = 4;
-    context.fillStyle = "#FFFFFF";
-    context.beginPath();
-    context.rect(solution3.x, solution3.y, solution3.width, solution3.height)
-    context.fill()
-    context.strokeStyle = "#202830";
-    context.lineWidth = 4;
-
-    // call update when the browser is ready to draw again
-    window.requestAnimationFrame(loop);
-
-};
+        launcher.missiles.push({
+            "x": launcher.x + launcher.w * .5,
+            "y": launcher.y,
+            "w": 3,
+            "h": 10,
+            "bg": "red"
+        });
+    });
+}
 
 
 
-window.addEventListener("keydown", controller.keyListener)
-window.addEventListener("keyup", controller.keyListener);
-window.requestAnimationFrame(loop);
+window.addEventListener("load", function (event) {
+    initCanvas();
+});
