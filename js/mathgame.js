@@ -2,35 +2,54 @@ function initCanvas() {
     let ctx = document.getElementById("canvas").getContext("2d")
     let cW = ctx.canvas.width;
     let cH = ctx.canvas.height;
-    let enemies = [
+
+    let solutions = ["1", "2", "3"];
+
+    let answers = [
 
         {
-            "id": "enemy4",
+            "value": "1",
+            "value2": "2",
+            "value3": "3"
+        },
+
+
+    ];
+
+    let rectangles = [
+
+        {
+            "id": "enemy1",
             "x": 100,
             "y": -70,
-            "w": 40,
-            "h": 20
+            "w": 0,
+            "h": 0
         },
+
         {
-            "id": "enemy5",
+            "id": "enemy2",
             "x": 325,
             "y": -70,
-            "w": 40,
-            "h": 20
+            "w": 0,
+            "h": 0
         },
+
         {
-            "id": "enemy6",
+            "id": "enemy3",
             "x": 550,
             "y": -70,
-            "w": 40,
-            "h": 20
+            "w": 0,
+            "h": 0
         }
     ];
 
     function renderEnemies() {
-        for (let i = 0; i < enemies.length; i++) {
-            ctx.fillStyle = "blue";
-            ctx.fillRect(enemies[i].x, enemies[i].y += 1, enemies[i].w, enemies[i].h)
+        for (let i = 0; i < rectangles.length; i++) {
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(rectangles[i].x, rectangles[i].y += 1, rectangles[i].w, rectangles[i].h);
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(answers[i], rectangles[i].x, rectangles[i].y);
         }
     }
 
@@ -55,7 +74,7 @@ function initCanvas() {
                     this.missiles.splice(i, 1);
                 }
             }
-            if (enemies.length == 0) {
+            if (rectangles.length == 0) {
                 clearInterval(animateInterval);
 
                 ctx.fillStyle = "#FC0";
@@ -64,12 +83,12 @@ function initCanvas() {
             }
         }
         this.hitDetect = function (m, mi) {
-            for (let i = 0; i < enemies.length; i++) {
-                let e = enemies[i];
+            for (let i = 0; i < rectangles.length; i++) {
+                let e = rectangles[i];
                 if (m.x + m.w >= e.x && m.x <= e.x + e.w && m.y >= e.y && m.y <= e.y + e.h) {
                     this.missiles.splice(this.missiles[mi], 1);
 
-                    enemies.splice(i, 1);
+                    rectangles.splice(i, 1);
 
                     document.getElementById("status").innerHTML = "You destroyed " + e.id;
                 }
