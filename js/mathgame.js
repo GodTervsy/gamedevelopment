@@ -1,178 +1,114 @@
-let movePlayer, player, movement, Launcher;
+let ctx, controller, rectangle, loop;
 
-movement = {
+ctx = document.querySelector("canvas").getContext("2d");
+
+ctx.canvas.height = 500;
+ctx.canvas.width = 1000;
+
+rectangle = {
+
+    height: 32,
+    jumping: true,
+    width: 32,
+    x: 144, // center of the canvas
+    x_velocity: 0,
+    y: 0,
+    y_velocity: 0
+
+};
+
+controller = {
+
     left: false,
     right: false,
-    fire: false,
+    up: false,
     keyListener: function (event) {
 
         let key_state = (event.type == "keydown") ? true : false;
 
         switch (event.keyCode) {
 
-            case 32:
-                controller.fire = key_state;
-                break;
-            case 37:
+            case 37: // left key
                 controller.left = key_state;
                 break;
-            case 39:
+            case 38: // up key
+                controller.up = key_state;
+                break;
+            case 39: // right key
                 controller.right = key_state;
                 break;
 
-
         }
+
     }
+
 };
 
-function initCanvas() {
-    let ctx = document.getElementById("canvas").getContext("2d")
-    let cW = ctx.canvas.width;
-    let cH = ctx.canvas.height;
+loop = function () {
 
-    let solutions = ["1", "2", "3"];
+    if (controller.up && rectangle.jumping == false) {
 
-    let answers = [
+        rectangle.y_velocity -= 20;
+        rectangle.jumping = true;
 
-        {
-            "value": "1",
-            "value2": "2",
-            "value3": "3"
-        },
-
-
-    ];
-
-    let rectangles = [
-
-        {
-            "id": "enemy1",
-            "x": 100,
-            "y": -70,
-            "w": 0,
-            "h": 0
-        },
-
-        {
-            "id": "enemy2",
-            "x": 325,
-            "y": -70,
-            "w": 0,
-            "h": 0
-        },
-
-        {
-            "id": "enemy3",
-            "x": 550,
-            "y": -70,
-            "w": 0,
-            "h": 0
-        }
-    ];
-
-    function renderEnemies() {
-        for (let i = 0; i < rectangles.length; i++) {
-            ctx.fillStyle = "#000000";
-            ctx.fillRect(rectangles[i].x, rectangles[i].y += 1, rectangles[i].w, rectangles[i].h);
-            ctx.font = "30px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText("6", rectangles[i].x, rectangles[i].y);
-        }
     }
 
-    function Launcher() {
-        this.y = 280, this.x = cW * .5 - .25, this.w = 50, this.h = 50, this.dir, this.bg = "orange",
-            this.missiles = [];
-        this.render = function () {
-            if (movement.left) {
-                alert("left");
+    if (controller.left) {
 
-                launcher.dir = "left";
+        rectangle.x_velocity -= 0.5;
 
-            }
-
-            if (movement.right) {
-
-                launcher.dir = "right";
-            }
-            ctx.fillStyle = this.bg;
-            ctx.fillRect(this.x, this.y, this.w, this.h);
-            for (let i = 0; i < this.missiles.length; i++) {
-                let m = this.missiles[i];
-                ctx.fillStyle = m.bg;
-                ctx.fillRect(m.x, m.y -= 5, m.w, m.h);
-                this.hitDetect(this.missiles[i], i);
-                if (m.y <= 0) {
-                    this.missiles.splice(i, 1);
-                }
-            }
-            if (rectangles.length == 0) {
-                clearInterval(animateInterval);
-
-                ctx.fillStyle = "#FC0";
-                ctx.font = "italic bold 36px Arial, sans-serif";
-                ctx.fillText("Level Complete", cW * .5 - 130, 50, 300);
-            }
-        }
-        this.hitDetect = function (m, mi) {
-            for (let i = 0; i < rectangles.length; i++) {
-                let e = rectangles[i];
-                if (m.x + m.w >= e.x && m.x <= e.x + e.w && m.y >= e.y && m.y <= e.y + e.h) {
-                    this.missiles.splice(this.missiles[mi], 1);
-
-                    rectangles.splice(i, 1);
-
-                    document.getElementById("status").innerHTML = "You destroyed " + e.id;
-                }
-            }
-        }
     }
 
-    let launcher = new Launcher();
+    if (controller.right) {
 
-    function animate() {
-        ctx.clearRect(0, 0, cW, cH);
-        launcher.render();
-        renderEnemies();
+        rectangle.x_velocity += 0.5;
+
     }
-    let animateInterval = setInterval(animate, 30);
 
-    /*let left_btn = document.getElementById("left_btn");
-    let right_btn = document.getElementById("right_btn");
-    let fire_btn = document.getElementById("fire_btn");
-    left_btn.addEventListener("mousedown", function (event) {
-        launcher.dir = "left"
-    });
-    left_btn.addEventListener("mouseup", function (event) {
-        launcher.dir = "";
-    });
-    right_btn.addEventListener("mousedown", function (event) {
-        launcher.dir = "right";
-    });
-    right_btn.addEventListener("mouseup", function (event) {
-        launcher.dir = "";
-    });
-    fire_btn.addEventListener("mouseup", function (event) {
-        launcher.dir = "";
-    });
-    fire_btn.addEventListener("mousedown", function (event) {
+    rectangle.y_velocity += 1.5; // gravity
+    rectangle.x += rectangle.x_velocity;
+    rectangle.y += rectangle.y_velocity;
+    rectangle.x_velocity *= 0.9; // friction
+    rectangle.y_velocity *= 0.9; // friction
 
-        launcher.missiles.push({
-            "x": launcher.x + launcher.w * .5,
-            "y": launcher.y,
-            "w": 3,
-            "h": 10,
-            "bg": "red"
-        });
-    });*/
+    // if rectangle is falling below floor line
+    if (rectangle.y > 415 - 16 - 32) {
 
-    window.requestAnimationFrame(Launcher);
-}
+        rectangle.jumping = false;
+        rectangle.y = 415 - 16 - 32;
+        rectangle.y_velocity = 0;
 
-/*window.addEventListener("load", function (event) {
-    initCanvas();
-});*/
+    }
 
-window.addEventListener("keydown", movement.keyListener);
-window.addEventListener("keyup", movement.keyListener);
-requestAnimationFrame(Launcher);
+    // if rectangle is going off the left of the screen
+    if (rectangle.x < -32) {
+
+        rectangle.x = 1000;
+
+    } else if (rectangle.x > 1000) { // if rectangle goes past right boundary
+
+        rectangle.x = -32;
+
+    }
+
+    ctx.fillStyle = "#202020";
+    ctx.fillRect(0, 0, 1000, 500); // x, y, width, height
+    ctx.fillStyle = "#ff0000"; // hex for red
+    ctx.beginPath();
+    ctx.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    ctx.fill();
+    ctx.strokeStyle = "#202830";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(0, 400);
+    ctx.lineTo(1000, 400);
+    ctx.stroke();
+
+    // call update when the browser is ready to draw again
+    window.requestAnimationFrame(loop);
+
+};
+
+window.addEventListener("keydown", controller.keyListener)
+window.addEventListener("keyup", controller.keyListener);
+window.requestAnimationFrame(loop);
