@@ -1,50 +1,131 @@
-let ctx, controller, rectangle, loop;
+function renderGame() {
+    let ctx, controller, rectangle, loop;
 
-ctx = document.querySelector("canvas").getContext("2d");
+    ctx = document.querySelector("canvas").getContext("2d");
 
-ctx.canvas.height = 500;
-ctx.canvas.width = 1000;
+    let cW = ctx.canvas.width;
+    let cH = ctx.canvas.height;
 
-rectangle = {
+    ctx.canvas.height = 500;
+    ctx.canvas.width = 1000;
 
-    height: 32,
-    jumping: true,
-    width: 32,
-    x: 144, // center of the canvas
-    x_velocity: 0,
-    y: 0,
-    y_velocity: 0
+    rectangle = {
 
-};
+        height: 32,
+        jumping: true,
+        width: 32,
+        x: 144, // center of the canvas
+        x_velocity: 0,
+        y: 0,
+        y_velocity: 0
 
-controller = {
+    };
 
-    left: false,
-    right: false,
-    up: false,
-    keyListener: function (event) {
+    controller = {
 
-        let key_state = (event.type == "keydown") ? true : false;
+        left: false,
+        right: false,
+        space: false,
+        keyListener: function (event) {
 
-        switch (event.keyCode) {
+            let key_state = (event.type == "keydown") ? true : false;
 
-            case 37: // left key
-                controller.left = key_state;
-                break;
-            case 38: // up key
-                controller.up = key_state;
-                break;
-            case 39: // right key
-                controller.right = key_state;
-                break;
+            switch (event.keyCode) {
+
+                case 32: // space key
+                    controller.space = key_state;
+                    break;
+                case 37: // left key
+                    controller.left = key_state;
+                    break;
+                case 39: // right key
+                    controller.right = key_state;
+                    break;
+
+            }
 
         }
 
+    };
+
+    let problems = [{
+        "id": "problems1",
+        "value1": "1",
+        "value2": "2",
+        "value3": "3"
+    }];
+
+    let hitBoxes = [{
+
+            "id": "rectangle1",
+            "x": 100,
+            "y": -70,
+            "w": 0,
+            "h": 0
+        },
+
+        {
+            "id": "rectangle2",
+            "x": 325,
+            "y": -70,
+            "w": 0,
+            "h": 0
+        },
+        {
+            "id": "rectangle3",
+            "x": 550,
+            "y": -70,
+            "w": 0,
+            "h": 0
+        }
+    ]
+
+    function renderProblems() {
+        for (let i = 0; i < hitBoxes.length; i++) {
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(hitBoxes[i].x, hitBoxes[i].y += 1, hitBoxes[i].w, hitBoxes[i].h);
+            ctx.font = "30px Arial";
+            ctx.fillText(problems[i], hitBoxes[i].x, hitBoxes[i].y);
+        }
     }
 
-};
+    function Launcher() {
 
-loop = function () {
+        this.y = 280, this.x = cW * .5 - .25, this.w = 50, this.h = 50,
+            this.missiles = [];
+
+        this.renderPlayer = function () {
+
+            for (let i = 0; i < this.missiles.length; i++) {
+                let m = this.missiles[i];
+                ctx.fillStyle = "#00FFFF";
+                ctx.fillRect(m.x, m.y -= 5, m.w, m.h);
+                this.hitDetect(this.missiles[i], i);
+                if (m.y <= 0) {
+                    this.missiles.splice(i, 1);
+                }
+            }
+
+        }
+        this.hitDetect = function (m, mi) {
+            for (let i = 0; i < problems.length; i++) {
+                let p = problems[i];
+                if (m.x + m.w >= p.x && m.x <= p.x + p.w && m.y >= p.y && m.y <= p.y + p.h) {
+                    this.missiles.splice(this.missiles[mi], 1);
+
+                    problems.splice(i, 1);
+                }
+            }
+        }
+    }
+
+    let launcher = new Launcher();
+
+    function animate() {
+        launcher.renderPlayer();
+        renderProblems();
+    }
+    let animateInterval = setInterval(animate, 30);
 
     if (controller.up && rectangle.jumping == false) {
 
@@ -63,6 +144,17 @@ loop = function () {
 
         rectangle.x_velocity += 0.5;
 
+    }
+
+    if (controller.space) {
+
+        loop.missiles.push({
+            "x": loop.x + loop.w * .5,
+            "y": loop.y,
+            "w": 3,
+            "h": 10,
+            "bg": "#00FFFF"
+        });
     }
 
     rectangle.y_velocity += 1.5; // gravity
@@ -103,12 +195,8 @@ loop = function () {
     ctx.moveTo(0, 400);
     ctx.lineTo(1000, 400);
     ctx.stroke();
+}
 
-    // call update when the browser is ready to draw again
-    window.requestAnimationFrame(loop);
-
-};
-
-window.addEventListener("keydown", controller.keyListener)
-window.addEventListener("keyup", controller.keyListener);
-window.requestAnimationFrame(loop);
+window.addEventListener("load", function (event) {
+    renderGame();
+})
