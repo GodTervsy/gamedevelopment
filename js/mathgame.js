@@ -5,25 +5,6 @@ context = document.querySelector("canvas").getContext("2d");
 context.canvas.height = 500;
 context.canvas.width = 1000;
 
-let answers = ["value1", "value2", "value3"];
-
-let solutions = [{
-        "value1": "7",
-        "value2": "10",
-        "value3": "90"
-    },
-    {
-        "value1": "7",
-        "value2": "10",
-        "value3": "90"
-    },
-    {
-        "value1": "7",
-        "value2": "10",
-        "value3": "90"
-    }
-]
-
 let hitBox1 = [{
     "x": 150,
     "y": 90,
@@ -59,6 +40,8 @@ let rectangle = [{
     "y_velocity": 0
 
 }];
+
+
 
 controller = {
 
@@ -162,19 +145,19 @@ loop = function () {
             for (let i = 0; i < hitBox1.length; i++) {
                 for (let i = 0; i < hitBox2.length; i++) {
                     for (let i = 0; i < hitBox3.length; i++) {
-                        let s1 = hitBox1[i];
-                        let s2 = hitBox2[i];
-                        let s3 = hitBox3[i];
+                        let h1 = hitBox1[i];
+                        let h2 = hitBox2[i];
+                        let h3 = hitBox3[i];
                         let r = rectangle[i];
 
-                        //s1 = rect1 r = rect2
+                        //h1 = rect1 r = rect2
 
-                        if (s1.x < r.x + r.width && s1.x + s1.width > r.x && s1.y < r.y + r.height && s1.y + s1.height > r.y) {
+                        if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y) {
                             console.log("YUH1");
-                            s1.text = "lorcan gey";
-                        } else if (s2.x < r.x + r.width && s2.x + s2.width > r.x && s2.y < r.y + r.height && s2.y + s2.height > r.y) {
+                            h1.text = "gey";
+                        } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y) {
                             console.log("YUH2");
-                        } else if (s3.x < r.x + r.width && s3.x + s3.width > r.x && s3.y < r.y + r.height && s3.y + s3.height > r.y) {
+                        } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y) {
                             console.log("YUH3");
                         }
                     }
