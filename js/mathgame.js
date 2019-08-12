@@ -5,27 +5,46 @@ context = document.querySelector("canvas").getContext("2d");
 context.canvas.height = 500;
 context.canvas.width = 1000;
 
-let solution1 = [{
+let answers = ["value1", "value2", "value3"];
+
+let solutions = [{
+        "value1": "7",
+        "value2": "10",
+        "value3": "90"
+    },
+    {
+        "value1": "7",
+        "value2": "10",
+        "value3": "90"
+    },
+    {
+        "value1": "7",
+        "value2": "10",
+        "value3": "90"
+    }
+]
+
+let hitBox1 = [{
     "x": 150,
     "y": 90,
-    "height": 10,
-    "width": 20,
+    "height": 1,
+    "width": 50,
     "text": "hi"
 }];
 
-let solution2 = [{
+let hitBox2 = [{
     "x": 500,
     "y": 90,
-    "height": 0,
-    "width": 0,
+    "height": 1,
+    "width": 20,
     "text": "test"
 }];
 
-let solution3 = [{
+let hitBox3 = [{
     "x": 850,
     "y": 90,
-    "height": 0,
-    "width": 0,
+    "height": 1,
+    "width": 20,
     "text": "yes"
 }];
 
@@ -74,7 +93,7 @@ loop = function () {
 
         if (controller.up && rectangle[i].jumping == false) {
 
-            rectangle[i].y_velocity -= 70;
+            rectangle[i].y_velocity -= 60;
             rectangle[i].jumping = true;
 
         }
@@ -119,46 +138,47 @@ loop = function () {
 
         function renderSolutions() {
 
-            for (let i = 0; i < solution1.length; i++) {
-                context.font = "30px Arial";
+            for (let i = 0; i < hitBox1.length; i++) {
+                context.font = "20px Arial";
                 context.textAlign = "center";
-                context.fillText(solution1[i].text, solution1[i].x, solution1[i].y, solution1[i].width);
+                context.fillText(hitBox1[i].text, hitBox1[i].x, hitBox1[i].y, hitBox1[i].width);
             }
 
-            for (let i = 0; i < solution2.length; i++) {
-                context.font = "30px Arial";
+            for (let i = 0; i < hitBox2.length; i++) {
+                context.font = "20px Arial";
                 context.textAlign = "center";
-                context.fillText(solution2[i].text, solution2[i].x, solution2[i].y);
+                context.fillText(hitBox2[i].text, hitBox2[i].x, hitBox2[i].y);
             }
 
-            for (let i = 0; i < solution3.length; i++) {
-                context.font = "30px Arial";
+            for (let i = 0; i < hitBox3.length; i++) {
+                context.font = "20px Arial";
                 context.textAlign = "center";
-                context.fillText(solution3[i].text, solution3[i].x, solution3[i].y);
+                context.fillText(hitBox3[i].text, hitBox3[i].x, hitBox3[i].y);
             }
         }
 
         function hitDetect() {
 
-            for (let i = 0; i < solution1.length; i++) {
-                let s1 = solution1[i];
-                let r = rectangle[i];
+            for (let i = 0; i < hitBox1.length; i++) {
+                for (let i = 0; i < hitBox2.length; i++) {
+                    for (let i = 0; i < hitBox3.length; i++) {
+                        let s1 = hitBox1[i];
+                        let s2 = hitBox2[i];
+                        let s3 = hitBox3[i];
+                        let r = rectangle[i];
 
-                /*if (distX > (s1.width + r.x)) {
-                    alert("nahx");
+                        //s1 = rect1 r = rect2
+
+                        if (s1.x < r.x + r.width && s1.x + s1.width > r.x && s1.y < r.y + r.height && s1.y + s1.height > r.y) {
+                            console.log("YUH1");
+                            s1.text = "lorcan gey";
+                        } else if (s2.x < r.x + r.width && s2.x + s2.width > r.x && s2.y < r.y + r.height && s2.y + s2.height > r.y) {
+                            console.log("YUH2");
+                        } else if (s3.x < r.x + r.width && s3.x + s3.width > r.x && s3.y < r.y + r.height && s3.y + s3.height > r.y) {
+                            console.log("YUH3");
+                        }
+                    }
                 }
-
-                if (distX <= (s1.x)) {
-                    alert("yuhx");
-                }
-
-                if (distY > (s1.height + r.y)) {
-                    alert("nahy");
-                }
-
-                if (distY <= (s1.y)) {
-                    alert("yuhy");
-                }*/
             }
         }
 
@@ -166,25 +186,21 @@ loop = function () {
         context.fillRect(0, 0, 1000, 500); // x, y, width, height
         context.fillStyle = "#ff0000"; // hex for red
         context.beginPath();
-        context.rect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
-        context.fill();
+        context.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
         context.strokeStyle = "#202830";
         context.lineWidth = 4;
         context.beginPath();
         context.moveTo(0, 420);
         context.lineTo(1000, 420);
         context.stroke();
-        context.fillStyle = "#FFFFFF";
-        context.beginPath();
-        //context.fillRect(solution1.x, solution1.y, solution1.width, solution1.height)
         context.strokeStyle = "#202830";
         context.lineWidth = 4;
         context.fillStyle = "#FFFFFF";
-        //context.fillRect(solution2.x, solution2.y, solution2.width, solution2.height)
+        //context.fillRect(hitBox2.x, hitBox2.y, hitBox2.width, hitBox2.height)
         context.strokeStyle = "#202830";
         context.lineWidth = 4;
         context.fillStyle = "#FFFFFF";
-        //context.fillRect(solution3.x, solution3.y, solution3.width, solution3.height)
+        //context.fillRect(hitBox3.x, hitBox3.y, hitBox3.width, hitBox3.height)
         context.strokeStyle = "#202830";
         context.lineWidth = 4;
     }
