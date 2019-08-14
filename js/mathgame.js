@@ -6,6 +6,7 @@ context.canvas.height = 500;
 context.canvas.width = 1000;
 
 let hitBox1 = [{
+    "id": "value1",
     "x": 150,
     "y": 90,
     "height": 1,
@@ -14,6 +15,7 @@ let hitBox1 = [{
 }];
 
 let hitBox2 = [{
+    "id": "value2",
     "x": 500,
     "y": 90,
     "height": 1,
@@ -22,6 +24,7 @@ let hitBox2 = [{
 }];
 
 let hitBox3 = [{
+    "id": "value3",
     "x": 850,
     "y": 90,
     "height": 1,
@@ -150,15 +153,42 @@ loop = function () {
                         let h3 = hitBox3[i];
                         let r = rectangle[i];
 
+                        /*let set1 = [
+                            ["123", "2143", "2131"],
+                            ["2498", "293847", "23894"],
+                            ["238947", "23946", "784325"]
+                        ];*/
+
+                        /*let solutions = [{
+
+                                "set1": [{
+                                    "a": "29",
+                                    "b": "72",
+                                    "c": "90"
+                                }]
+
+                            },
+                            {
+                                "id": "set2",
+                                "a": "901",
+                                "b": "221",
+                                "c": "2321"
+                            }
+
+                        ];*/
+
                         //h1 = rect1 r = rect2
 
-                        if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y) {
-                            console.log("YUH1");
-                            h1.text = "gey";
-                        } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y) {
-                            console.log("YUH2");
-                        } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y) {
-                            console.log("YUH3");
+                        for (let i = 0; i < set1.length; i++) {
+                            if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y) {
+                                console.log("YUH1");
+                                //h1.text = set1[0][i];
+                                console.log(set1APosition);
+                            } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y) {
+                                console.log("YUH2");
+                            } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y) {
+                                console.log("YUH3");
+                            }
                         }
                     }
                 }
