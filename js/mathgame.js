@@ -40,9 +40,20 @@ let rectangle = [{
     "width": 50,
     "x_velocity": 0,
     "y": 0,
-    "y_velocity": 0
+    "y_velocity": 0,
+    "colliding": true
 
 }];
+
+let questions = [
+    ["123", "2143", "2872", "2387"],
+    ["2498", "293847", "23894"],
+    ["238947", "23946", "784325"]
+];
+
+let questionsPosition1 = questions[0].indexOf("123");
+let questionsPosition2 = questions[1].indexOf("2498");
+let questionsPosition3 = questions[2].indexOf("238947");
 
 
 
@@ -81,6 +92,7 @@ loop = function () {
 
             rectangle[i].y_velocity -= 60;
             rectangle[i].jumping = true;
+            rectangle[i].colliding = true;
 
         }
 
@@ -152,13 +164,6 @@ loop = function () {
                         let h2 = hitBox2[i];
                         let h3 = hitBox3[i];
                         let r = rectangle[i];
-
-                        /*let set1 = [
-                            ["123", "2143", "2131"],
-                            ["2498", "293847", "23894"],
-                            ["238947", "23946", "784325"]
-                        ];*/
-
                         /*let solutions = [{
 
                                 "set1": [{
@@ -179,15 +184,24 @@ loop = function () {
 
                         //h1 = rect1 r = rect2
 
-                        for (let i = 0; i < set1.length; i++) {
-                            if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y) {
+
+
+                        for (let i = 0; i < questions.length; i++) {
+                            if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
+                                r.colliding = false;
                                 console.log("YUH1");
-                                //h1.text = set1[0][i];
-                                console.log(set1APosition);
-                            } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y) {
+                                h1.text = questions[0][questionsPosition1];
+                                questionsPosition1++;
+                            } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
+                                r.colliding = false;
                                 console.log("YUH2");
-                            } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y) {
+                                h2.text = questions[1][questionsPosition2];
+                                questionsPosition2++;
+                            } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
+                                r.colliding = false;
                                 console.log("YUH3");
+                                h3.text = questions[2][questionsPosition3];
+                                questionsPosition3++;
                             }
                         }
                     }
