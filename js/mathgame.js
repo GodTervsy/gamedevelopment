@@ -1,4 +1,5 @@
 let context, controller, loop;
+let score = 0;
 
 context = document.querySelector("canvas").getContext("2d");
 
@@ -11,7 +12,7 @@ let hitBox1 = [{
     "y": 90,
     "height": 1,
     "width": 50,
-    "text": "hi"
+    "text": "123"
 }];
 
 let hitBox2 = [{
@@ -20,7 +21,7 @@ let hitBox2 = [{
     "y": 90,
     "height": 1,
     "width": 20,
-    "text": "test"
+    "text": "2498"
 }];
 
 let hitBox3 = [{
@@ -29,7 +30,7 @@ let hitBox3 = [{
     "y": 90,
     "height": 1,
     "width": 20,
-    "text": "yes"
+    "text": "238947"
 }];
 
 let rectangle = [{
@@ -46,7 +47,7 @@ let rectangle = [{
 }];
 
 let questions = [
-    ["123", "2143", "2872", "2387"],
+    ["123", "2143", "2872"],
     ["2498", "293847", "23894"],
     ["238947", "23946", "784325"]
 ];
@@ -54,7 +55,6 @@ let questions = [
 let questionsPosition1 = questions[0].indexOf("123");
 let questionsPosition2 = questions[1].indexOf("2498");
 let questionsPosition3 = questions[2].indexOf("238947");
-
 
 
 controller = {
@@ -164,6 +164,17 @@ loop = function () {
                         let h2 = hitBox2[i];
                         let h3 = hitBox3[i];
                         let r = rectangle[i];
+
+                        function displayAnswers() {
+                            h1.text = questions[0][questionsPosition1];
+                            questionsPosition1++;
+
+                            h2.text = questions[1][questionsPosition2];
+                            questionsPosition2++;
+
+                            h3.text = questions[2][questionsPosition3];
+                            questionsPosition3++;
+                        }
                         /*let solutions = [{
 
                                 "set1": [{
@@ -189,19 +200,22 @@ loop = function () {
                         for (let i = 0; i < questions.length; i++) {
                             if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
                                 r.colliding = false;
-                                console.log("YUH1");
-                                h1.text = questions[0][questionsPosition1];
-                                questionsPosition1++;
+                                userAnswer = "A";
+                                //console.log("YUH1");
+                                displayAnswers();
+                                console.log(score);
                             } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
                                 r.colliding = false;
-                                console.log("YUH2");
-                                h2.text = questions[1][questionsPosition2];
-                                questionsPosition2++;
+                                userAnswer = "B";
+                                //console.log("YUH2");
+                                displayAnswers();
+                                console.log(score);
                             } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
                                 r.colliding = false;
-                                console.log("YUH3");
-                                h3.text = questions[2][questionsPosition3];
-                                questionsPosition3++;
+                                userAnswer = "C";
+                                //console.log("YUH3");
+                                displayAnswers();
+                                console.log(score);
                             }
                         }
                     }
