@@ -1,6 +1,6 @@
 let context, controller, loop;
 let score = 0;
-
+let userAnswer = "";
 context = document.querySelector("canvas").getContext("2d");
 
 context.canvas.height = 500;
@@ -51,6 +51,9 @@ let questions = [
     ["2498", "293847", "23894"],
     ["238947", "23946", "784325"]
 ];
+
+let answers = ["A", "B", "C"];
+let answersPosition = answers.indexOf("A");
 
 let questionsPosition1 = questions[0].indexOf("123");
 let questionsPosition2 = questions[1].indexOf("2498");
@@ -174,6 +177,17 @@ loop = function () {
 
                             h3.text = questions[2][questionsPosition3];
                             questionsPosition3++;
+
+                            for (let i = 0; i < answers.length; i++) {
+                                let a = answers[i];
+
+                                if (userAnswer == a[answersPosition]) {
+                                    score++;
+                                    console.log(score);
+                                    console.log(userAnswer);
+
+                                }
+                            }
                         }
                         /*let solutions = [{
 
@@ -203,19 +217,16 @@ loop = function () {
                                 userAnswer = "A";
                                 //console.log("YUH1");
                                 displayAnswers();
-                                console.log(score);
                             } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "B";
                                 //console.log("YUH2");
                                 displayAnswers();
-                                console.log(score);
                             } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "C";
                                 //console.log("YUH3");
                                 displayAnswers();
-                                console.log(score);
                             }
                         }
                     }
