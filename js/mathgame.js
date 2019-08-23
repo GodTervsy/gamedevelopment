@@ -47,13 +47,13 @@ let rectangle = [{
 }];
 
 let questions = [
-    ["123", "2143", "2872"],
-    ["2498", "293847", "23894"],
-    ["238947", "23946", "784325"]
+    ["123", "2143", "2872", "90"],
+    ["2498", "293847", "23894", "82"],
+    ["238947", "23946", "784325", "69"]
 ];
 
-let answers = ["A", "B", "C"];
-let answersPosition = answers.indexOf("A");
+let answers = ["Start", "A", "B", "C", "A"];
+let answersPosition = answers.indexOf("Start");
 
 let questionsPosition1 = questions[0].indexOf("123");
 let questionsPosition2 = questions[1].indexOf("2498");
@@ -169,6 +169,7 @@ loop = function () {
                         let r = rectangle[i];
 
                         function displayAnswers() {
+                            //console.log(answers[answersPosition])
                             h1.text = questions[0][questionsPosition1];
                             questionsPosition1++;
 
@@ -178,16 +179,15 @@ loop = function () {
                             h3.text = questions[2][questionsPosition3];
                             questionsPosition3++;
 
-                            for (let i = 0; i < answers.length; i++) {
-                                let a = answers[i];
-
-                                if (userAnswer == a[answersPosition]) {
-                                    score++;
-                                    console.log(score);
-                                    console.log(userAnswer);
-
-                                }
+                            if (userAnswer == answers[answersPosition]) {
+                                console.log("right");
+                                score++;
+                                console.log(score);
+                            } else {
+                                console.log("wrong");
+                                console.log(score);
                             }
+                            answersPosition++;
                         }
                         /*let solutions = [{
 
@@ -210,24 +210,21 @@ loop = function () {
                         //h1 = rect1 r = rect2
 
 
-
-                        for (let i = 0; i < questions.length; i++) {
-                            if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
-                                r.colliding = false;
-                                userAnswer = "A";
-                                //console.log("YUH1");
-                                displayAnswers();
-                            } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
-                                r.colliding = false;
-                                userAnswer = "B";
-                                //console.log("YUH2");
-                                displayAnswers();
-                            } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
-                                r.colliding = false;
-                                userAnswer = "C";
-                                //console.log("YUH3");
-                                displayAnswers();
-                            }
+                        if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
+                            r.colliding = false;
+                            userAnswer = "A";
+                            //console.log("YUH1");
+                            displayAnswers();
+                        } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
+                            r.colliding = false;
+                            userAnswer = "B";
+                            //console.log("YUH2");
+                            displayAnswers();
+                        } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
+                            r.colliding = false;
+                            userAnswer = "C";
+                            //console.log("YUH3");
+                            displayAnswers();
                         }
                     }
                 }
