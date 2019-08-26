@@ -9,7 +9,7 @@ context.canvas.width = 1000;
 let hitBox1 = [{
     "id": "value1",
     "x": 150,
-    "y": 90,
+    "y": 150,
     "height": 1,
     "width": 50,
     "text": "123"
@@ -18,7 +18,7 @@ let hitBox1 = [{
 let hitBox2 = [{
     "id": "value2",
     "x": 500,
-    "y": 90,
+    "y": 150,
     "height": 1,
     "width": 20,
     "text": "2498"
@@ -27,7 +27,7 @@ let hitBox2 = [{
 let hitBox3 = [{
     "id": "value3",
     "x": 850,
-    "y": 90,
+    "y": 150,
     "height": 1,
     "width": 20,
     "text": "238947"
@@ -46,18 +46,34 @@ let rectangle = [{
 
 }];
 
-let questions = [
+let solutions = [
     ["123", "2143", "2872", "90"],
     ["2498", "293847", "23894", "82"],
     ["238947", "23946", "784325", "69"]
 ];
 
-let answers = ["Start", "A", "B", "C", "A"];
+let paragraphText = [
+
+    {
+        "x": 500,
+        "y": 50,
+        "text": ""
+    }
+];
+
+let questions = [
+    "Integrate the following expression: ∫89 dx",
+    "Lol!?"
+];
+
+let questionsPosition = questions.indexOf("Integrate the following expression: ∫89 dx");
+
+let answers = ["Start", "A", "B", "C", "A", "B", "C", "B"];
 let answersPosition = answers.indexOf("Start");
 
-let questionsPosition1 = questions[0].indexOf("123");
-let questionsPosition2 = questions[1].indexOf("2498");
-let questionsPosition3 = questions[2].indexOf("238947");
+let solutionsPosition1 = solutions[0].indexOf("123");
+let solutionsPosition2 = solutions[1].indexOf("2498");
+let solutionsPosition3 = solutions[2].indexOf("238947");
 
 
 controller = {
@@ -156,6 +172,10 @@ loop = function () {
                 context.textAlign = "center";
                 context.fillText(hitBox3[i].text, hitBox3[i].x, hitBox3[i].y);
             }
+
+            for (let i = 0; i < paragraphText.length; i++) {
+                context.fillText(paragraphText[i].text, paragraphText[i].x, paragraphText[i].y);
+            }
         }
 
         function hitDetect() {
@@ -163,68 +183,53 @@ loop = function () {
             for (let i = 0; i < hitBox1.length; i++) {
                 for (let i = 0; i < hitBox2.length; i++) {
                     for (let i = 0; i < hitBox3.length; i++) {
-                        let h1 = hitBox1[i];
-                        let h2 = hitBox2[i];
-                        let h3 = hitBox3[i];
-                        let r = rectangle[i];
+                        for (let i = 0; i < paragraphText.length; i++) {
+                            let h1 = hitBox1[i];
+                            let h2 = hitBox2[i];
+                            let h3 = hitBox3[i];
+                            let r = rectangle[i];
+                            let p = paragraphText[i];
 
-                        function displayAnswers() {
-                            //console.log(answers[answersPosition])
-                            h1.text = questions[0][questionsPosition1];
-                            questionsPosition1++;
+                            function displayAnswers() {
+                                //console.log(answers[answersPosition])
+                                h1.text = solutions[0][solutionsPosition1];
+                                solutionsPosition1++;
 
-                            h2.text = questions[1][questionsPosition2];
-                            questionsPosition2++;
+                                h2.text = solutions[1][solutionsPosition2];
+                                solutionsPosition2++;
 
-                            h3.text = questions[2][questionsPosition3];
-                            questionsPosition3++;
+                                h3.text = solutions[2][solutionsPosition3];
+                                solutionsPosition3++;
 
-                            if (userAnswer == answers[answersPosition]) {
-                                console.log("right");
-                                score++;
-                                console.log(score);
-                            } else {
-                                console.log("wrong");
-                                console.log(score);
-                            }
-                            answersPosition++;
-                        }
-                        /*let solutions = [{
+                                p.text = questions[questionsPosition];
+                                questionsPosition++;
 
-                                "set1": [{
-                                    "a": "29",
-                                    "b": "72",
-                                    "c": "90"
-                                }]
-
-                            },
-                            {
-                                "id": "set2",
-                                "a": "901",
-                                "b": "221",
-                                "c": "2321"
+                                if (userAnswer == answers[answersPosition]) {
+                                    score++;
+                                    console.log(score);
+                                } else {
+                                    console.log(score);
+                                }
+                                answersPosition++;
                             }
 
-                        ];*/
 
-                        //h1 = rect1 r = rect2
-
-
-                        if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
-                            r.colliding = false;
-                            userAnswer = "A";
-                            //console.log("YUH1");
-                            displayAnswers();
-                        } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
-                            r.colliding = false;
-                            userAnswer = "B";
-                            //console.log("YUH2");
-                            displayAnswers();
-                        } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
-                            r.colliding = false;
-                            userAnswer = "C";
-                            //console.log("YUH3");
-                            displayAnswers();
+                            if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
+                                r.colliding = false;
+                                userAnswer = "A";
+                                //console.log("YUH1");
+                                displayAnswers();
+                            } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
+                                r.colliding = false;
+                                userAnswer = "B";
+                                //console.log("YUH2");
+                                displayAnswers();
+                            } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
+                                r.colliding = false;
+                                userAnswer = "C";
+                                //console.log("YUH3");
+                                displayAnswers();
+                            }
                         }
                     }
                 }
