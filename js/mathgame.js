@@ -11,7 +11,7 @@ let hitBox1 = [{
     "x": 150,
     "y": 150,
     "height": 1,
-    "width": 50,
+    "width": 333,
     "text": "123"
 }];
 
@@ -20,7 +20,7 @@ let hitBox2 = [{
     "x": 500,
     "y": 150,
     "height": 1,
-    "width": 20,
+    "width": 333,
     "text": "2498"
 }];
 
@@ -29,7 +29,7 @@ let hitBox3 = [{
     "x": 850,
     "y": 150,
     "height": 1,
-    "width": 20,
+    "width": 333,
     "text": "238947"
 }];
 
@@ -47,9 +47,9 @@ let rectangle = [{
 }];
 
 let solutions = [
-    ["123", "2143", "2872", "90"],
-    ["2498", "293847", "23894", "82"],
-    ["238947", "23946", "784325", "69"]
+    ["The gradient of that function", "2872", "90"],
+    ["The position of the function on the graph", "293847", "23894", "82"],
+    ["A parallel function", "23946", "784325", "69"]
 ];
 
 let paragraphText = [
@@ -62,18 +62,18 @@ let paragraphText = [
 ];
 
 let questions = [
+    "In calculus, what does differentiating a function find?",
     "Integrate the following expression: ∫89 dx",
-    "Lol!?"
 ];
 
-let questionsPosition = questions.indexOf("Integrate the following expression: ∫89 dx");
+let questionsPosition = questions.indexOf("In calculus, what does differentiating a function find?");
 
 let answers = ["Start", "A", "B", "C", "A", "B", "C", "B"];
 let answersPosition = answers.indexOf("Start");
 
-let solutionsPosition1 = solutions[0].indexOf("123");
-let solutionsPosition2 = solutions[1].indexOf("2498");
-let solutionsPosition3 = solutions[2].indexOf("238947");
+let solutionsPosition1 = solutions[0].indexOf("The gradient of that function");
+let solutionsPosition2 = solutions[1].indexOf("The position of the function on the graph");
+let solutionsPosition3 = solutions[2].indexOf("A parallel function");
 
 
 controller = {
@@ -174,6 +174,7 @@ loop = function () {
             }
 
             for (let i = 0; i < paragraphText.length; i++) {
+                context.font = "25px Arial"
                 context.fillText(paragraphText[i].text, paragraphText[i].x, paragraphText[i].y);
             }
         }
