@@ -1,16 +1,29 @@
-let context, controller, loop;
+let ctx, controller, loop;
 let score = 0;
 let userAnswer = "";
-context = document.querySelector("canvas").getContext("2d");
+ctx = document.querySelector("canvas").getContext("2d");
 
-context.canvas.height = 500;
-context.canvas.width = 1000;
+let character = new Image();
+character.src = "images/spriterunningsheet.png";
+
+let characterJumping = new Image();
+characterJumping.src = "images/spritejumping.png";
+
+let spriteFrameWidth = 2935 / 5;
+let spriteFrameHeight = 1414 / 2;
+let currentFrame = 0;
+let srcX, srcY;
+let trackLeft = 1;
+let trackRight = 0;
+
+ctx.canvas.height = 500;
+ctx.canvas.width = 1000;
 
 let hitBox1 = [{
     "id": "value1",
     "x": 150,
     "y": 150,
-    "height": 1,
+    "height": 10,
     "width": 333,
     "text": "123"
 }];
@@ -68,7 +81,7 @@ let questions = [
 
 let questionsPosition = questions.indexOf("In calculus, what does differentiating a function find?");
 
-let answers = ["Start", "A", "B", "C", "A", "B", "C", "B"];
+let answers = ["Start", "A"];
 let answersPosition = answers.indexOf("Start");
 
 let solutionsPosition1 = solutions[0].indexOf("The gradient of that function");
@@ -109,7 +122,10 @@ loop = function () {
 
         if (controller.up && rectangle[i].jumping == false) {
 
-            rectangle[i].y_velocity -= 60;
+            ctx.clearRect(0, 0, 1000, 500);
+            ctx.drawImage(characterJumping, 100, 100);
+
+            rectangle[i].y_velocity -= 50;
             rectangle[i].jumping = true;
             rectangle[i].colliding = true;
 
@@ -117,13 +133,24 @@ loop = function () {
 
         if (controller.left) {
 
-            rectangle[i].x_velocity -= 0.5;
+            ctx.clearRect(0, 0, 1000, 500);
+            currentFrame = currentFrame++ % 5;
+            srcX = currentFrame * spriteFrameWidth;
+            rectangle[i].x -= 9;
+            srcY = trackLeft * spriteFrameHeight;
+
+            rectangle[i].x_velocity -= 0.0001;
 
         }
 
         if (controller.right) {
+            ctx.clearRect(0, 0, 1000, 500);
+            currentFrame = currentFrame++ % 5;
+            srcX = currentFrame * spriteFrameWidth;
+            rectangle[i].x += 9;
+            srcY = trackRight * spriteFrameHeight
 
-            rectangle[i].x_velocity += 0.5;
+            rectangle[i].x_velocity += 0.0001;
 
         }
 
@@ -156,26 +183,26 @@ loop = function () {
         function renderSolutions() {
 
             for (let i = 0; i < hitBox1.length; i++) {
-                context.font = "20px Arial";
-                context.textAlign = "center";
-                context.fillText(hitBox1[i].text, hitBox1[i].x, hitBox1[i].y, hitBox1[i].width);
+                ctx.font = "20px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(hitBox1[i].text, hitBox1[i].x, hitBox1[i].y, hitBox1[i].width);
             }
 
             for (let i = 0; i < hitBox2.length; i++) {
-                context.font = "20px Arial";
-                context.textAlign = "center";
-                context.fillText(hitBox2[i].text, hitBox2[i].x, hitBox2[i].y);
+                ctx.font = "20px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(hitBox2[i].text, hitBox2[i].x, hitBox2[i].y);
             }
 
             for (let i = 0; i < hitBox3.length; i++) {
-                context.font = "20px Arial";
-                context.textAlign = "center";
-                context.fillText(hitBox3[i].text, hitBox3[i].x, hitBox3[i].y);
+                ctx.font = "20px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(hitBox3[i].text, hitBox3[i].x, hitBox3[i].y);
             }
 
             for (let i = 0; i < paragraphText.length; i++) {
-                context.font = "25px Arial"
-                context.fillText(paragraphText[i].text, paragraphText[i].x, paragraphText[i].y);
+                ctx.font = "25px Arial"
+                ctx.fillText(paragraphText[i].text, paragraphText[i].x, paragraphText[i].y);
             }
         }
 
@@ -237,27 +264,28 @@ loop = function () {
             }
         }
 
-        context.fillStyle = "#202020";
-        context.fillRect(0, 0, 1000, 500); // x, y, width, height
-        context.fillStyle = "#ff0000"; // hex for red
-        context.beginPath();
-        context.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
-        context.strokeStyle = "#202830";
-        context.lineWidth = 4;
-        context.beginPath();
-        context.moveTo(0, 420);
-        context.lineTo(1000, 420);
-        context.stroke();
-        context.strokeStyle = "#202830";
-        context.lineWidth = 4;
-        context.fillStyle = "#FFFFFF";
-        //context.fillRect(hitBox2.x, hitBox2.y, hitBox2.width, hitBox2.height)
-        context.strokeStyle = "#202830";
-        context.lineWidth = 4;
-        context.fillStyle = "#FFFFFF";
-        //context.fillRect(hitBox3.x, hitBox3.y, hitBox3.width, hitBox3.height)
-        context.strokeStyle = "#202830";
-        context.lineWidth = 4;
+        ctx.fillStyle = "#202020";
+        ctx.fillRect(0, 0, 1000, 500); // x, y, width, height
+        ctx.fillStyle = "#ff0000"; // hex for red
+        ctx.drawImage(character, srcX, srcY, spriteFrameWidth, spriteFrameHeight, rectangle[i].x, rectangle[i].y, 100, 100);
+        /*ctx.beginPath();
+        ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);*/
+        ctx.strokeStyle = "#202830";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(0, 460);
+        ctx.lineTo(1000, 460);
+        ctx.stroke();
+        ctx.strokeStyle = "#202830";
+        ctx.lineWidth = 4;
+        ctx.fillStyle = "#FFFFFF";
+        //ctx.fillRect(hitBox2.x, hitBox2.y, hitBox2.width, hitBox2.height)
+        ctx.strokeStyle = "#202830";
+        ctx.lineWidth = 4;
+        ctx.fillStyle = "#FFFFFF";
+        //ctx.fillRect(hitBox3.x, hitBox3.y, hitBox3.width, hitBox3.height)
+        ctx.strokeStyle = "#202830";
+        ctx.lineWidth = 4;
     }
 
     // call update when the browser is ready to draw again
