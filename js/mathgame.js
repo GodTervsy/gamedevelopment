@@ -11,7 +11,7 @@ let hitBox1 = [{
     "x": 150,
     "y": 150,
     "height": 1,
-    "width": 333,
+    "width": 100,
     "text": "123"
 }];
 
@@ -20,7 +20,7 @@ let hitBox2 = [{
     "x": 500,
     "y": 150,
     "height": 1,
-    "width": 333,
+    "width": 100,
     "text": "2498"
 }];
 
@@ -29,7 +29,7 @@ let hitBox3 = [{
     "x": 850,
     "y": 150,
     "height": 1,
-    "width": 333,
+    "width": 100,
     "text": "238947"
 }];
 
@@ -47,9 +47,9 @@ let rectangle = [{
 }];
 
 let solutions = [
-    ["The gradient of that function", "2872", "90"],
-    ["The position of the function on the graph", "293847", "23894", "82"],
-    ["A parallel function", "23946", "784325", "69"]
+    ["The gradient of that function", "5x + 6", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "√-1", "Circular Motion"],
+    ["The position of the function on the graph", "0", "A coordinate on a curve", "89x", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
+    ["A parallel function", "6x + 5", "The area under the curve", "89x + c", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "62.402", "Distance"]
 ];
 
 let paragraphText = [
@@ -63,7 +63,14 @@ let paragraphText = [
 
 let questions = [
     "In calculus, what does differentiating a function find?",
+    "Differentiate the following expression: 3x^2 + 5x + 10",
+    "In calculus, what does integrating a function find?",
     "Integrate the following expression: ∫89 dx",
+    "What is the integration constant, c?",
+    "What is the formula for the discriminant at Level 2?",
+    "Which of these is a rule used in differentiation at Level 3?",
+    "What is the value of the complex number, i?",
+    "If a function for the velocity of an object is integrated, what resulting function is found?"
 ];
 
 let questionsPosition = questions.indexOf("In calculus, what does differentiating a function find?");
@@ -158,7 +165,7 @@ loop = function () {
             for (let i = 0; i < hitBox1.length; i++) {
                 ctx.font = "20px Arial";
                 ctx.textAlign = "center";
-                ctx.fillText(hitBox1[i].text, hitBox1[i].x, hitBox1[i].y, hitBox1[i].width);
+                ctx.fillText(hitBox1[i].text, hitBox1[i].x, hitBox1[i].y, );
             }
 
             for (let i = 0; i < hitBox2.length; i++) {
@@ -251,12 +258,12 @@ loop = function () {
         ctx.strokeStyle = "#FF0000";
         ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.moveTo(125, 155);
+        ctx.moveTo(130, 155);
         ctx.lineTo(170, 155);
-        ctx.moveTo(487, 155);
-        ctx.lineTo(550, 155);
-        ctx.moveTo(823, 155);
-        ctx.lineTo(877, 155);
+        ctx.moveTo(490, 155);
+        ctx.lineTo(530, 155);
+        ctx.moveTo(840, 155);
+        ctx.lineTo(882, 155);
         ctx.stroke();
         ctx.fillStyle = "#FFFFFF";
         //ctx.fillRect(hitBox2.x, hitBox2.y, hitBox2.width, hitBox2.height)
@@ -266,6 +273,10 @@ loop = function () {
         //ctx.fillRect(hitBox3.x, hitBox3.y, hitBox3.width, hitBox3.height)
         ctx.strokeStyle = "#202830";
         ctx.lineWidth = 4;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(hitBox1[i].x, hitBox1[i].y, hitBox1[i].width, hitBox1[i].height);
+        ctx.fillRect(hitBox2[i].x, hitBox2[i].y, hitBox2[i].width, hitBox2[i].height);
+        ctx.fillRect(hitBox3[i].x, hitBox3[i].y, hitBox3[i].width, hitBox3[i].height);
     }
 
     // call update when the browser is ready to draw again
