@@ -11,8 +11,9 @@ let hitBox1 = [{
     "x": 150,
     "y": 150,
     "height": 1,
-    "width": 100,
-    "text": "123"
+    "width": 200,
+    "text": "123",
+    "hitX": 50
 }];
 
 let hitBox2 = [{
@@ -20,8 +21,9 @@ let hitBox2 = [{
     "x": 500,
     "y": 150,
     "height": 1,
-    "width": 100,
-    "text": "2498"
+    "width": 200,
+    "text": "2498",
+    "hitX": 400
 }];
 
 let hitBox3 = [{
@@ -29,8 +31,9 @@ let hitBox3 = [{
     "x": 850,
     "y": 150,
     "height": 1,
-    "width": 100,
-    "text": "238947"
+    "width": 200,
+    "text": "238947",
+    "hitX": 750
 }];
 
 let rectangle = [{
@@ -47,9 +50,9 @@ let rectangle = [{
 }];
 
 let solutions = [
-    ["The gradient of that function", "5x + 6", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "√-1", "Circular Motion"],
-    ["The position of the function on the graph", "0", "A coordinate on a curve", "89x", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
-    ["A parallel function", "6x + 5", "The area under the curve", "89x + c", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "62.402", "Distance"]
+    ["The gradient of that function", "5x + 6", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "62.402", "Distance"],
+    ["The position of the function on the graph", "0", "A coordinate on a curve", "89x + c", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
+    ["A parallel function", "6x + 5", "The area under the curve", "89x", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "√-1", "Circular Motion"]
 ];
 
 let paragraphText = [
@@ -222,17 +225,17 @@ loop = function () {
                             }
 
 
-                            if (h1.x < r.x + r.width && h1.x + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
+                            if (h1.hitX < r.x + r.width && h1.hitX + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "A";
                                 //console.log("YUH1");
                                 displayAnswers();
-                            } else if (h2.x < r.x + r.width && h2.x + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
+                            } else if (h2.hitX < r.x + r.width && h2.hitX + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "B";
                                 //console.log("YUH2");
                                 displayAnswers();
-                            } else if (h3.x < r.x + r.width && h3.x + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
+                            } else if (h3.hitX < r.x + r.width && h3.hitX + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "C";
                                 //console.log("YUH3");
@@ -274,9 +277,9 @@ loop = function () {
         ctx.strokeStyle = "#202830";
         ctx.lineWidth = 4;
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(hitBox1[i].x, hitBox1[i].y, hitBox1[i].width, hitBox1[i].height);
-        ctx.fillRect(hitBox2[i].x, hitBox2[i].y, hitBox2[i].width, hitBox2[i].height);
-        ctx.fillRect(hitBox3[i].x, hitBox3[i].y, hitBox3[i].width, hitBox3[i].height);
+        ctx.fillRect(hitBox1[i].hitX, hitBox1[i].y, hitBox1[i].width, hitBox1[i].height);
+        ctx.fillRect(hitBox2[i].hitX, hitBox2[i].y, hitBox2[i].width, hitBox2[i].height);
+        ctx.fillRect(hitBox3[i].hitX, hitBox3[i].y, hitBox3[i].width, hitBox3[i].height);
     }
 
     // call update when the browser is ready to draw again
