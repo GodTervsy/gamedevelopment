@@ -78,7 +78,7 @@ let questions = [
 
 let questionsPosition = questions.indexOf("In calculus, what does differentiating a function find?");
 
-let answers = ["Start", "A", "B", "C"];
+let answers = ["Start", "A", "C", "C", "B", "B", "B", "A", "C", "A"];
 let answersPosition = answers.indexOf("Start");
 
 let solutionsPosition1 = solutions[0].indexOf("The gradient of that function");
@@ -168,7 +168,7 @@ loop = function () {
             for (let i = 0; i < hitBox1.length; i++) {
                 ctx.font = "20px Arial";
                 ctx.textAlign = "center";
-                ctx.fillText(hitBox1[i].text, hitBox1[i].x, hitBox1[i].y, );
+                ctx.fillText(hitBox1[i].text, hitBox1[i].x, hitBox1[i].y);
             }
 
             for (let i = 0; i < hitBox2.length; i++) {
@@ -186,6 +186,38 @@ loop = function () {
             for (let i = 0; i < paragraphText.length; i++) {
                 ctx.font = "25px Arial"
                 ctx.fillText(paragraphText[i].text, paragraphText[i].x, paragraphText[i].y);
+            }
+        }
+
+        function endGame() {
+            if (score == 9) {
+                if (
+                    window.confirm(
+                        "Outstanding performace!\nYou got " + score + " out of " + questions.length + "!" + "\nThanks for playing!\nIf you would like to play again, please click 'OK'. Otherwise, click cancel, or exit the browser tab."
+                    )
+                ) {
+                    questionsPosition = 1;
+                    location.reload();
+                } else {
+                    while (questionsPosition == questions.length) {
+                        alert(
+                            "Thanks for playing!\nIf you'd like to play again, please refresh the page (press F5).\nIf you do not want to play again, exit the browser tab."
+                        );
+                    }
+                }
+            } else if (score <= 8) {
+                if (
+                    window.confirm(
+                        "That's the end of the quiz!\nYou got " + score + " out of " + questions.length + "!" + "\nThanks for playing!\nIf you would like to play again and get a perfect score, please click 'OK'. Otherwise, click cancel or exit the browser tab."
+                    )
+                ) {
+                    questionsPosition = 1;
+                    location.reload();
+                } else {
+                    while (questionsPosition == questions.length) {
+                        alert("Thanks for playing!\nIf you'd like to play again, please refresh the page (press F5).\nIf you do not want to play again, exit the browser tab.");
+                    }
+                }
             }
         }
 
@@ -228,17 +260,14 @@ loop = function () {
                             if (h1.hitX < r.x + r.width && h1.hitX + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "A";
-                                //console.log("YUH1");
                                 displayAnswers();
                             } else if (h2.hitX < r.x + r.width && h2.hitX + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "B";
-                                //console.log("YUH2");
                                 displayAnswers();
                             } else if (h3.hitX < r.x + r.width && h3.hitX + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
                                 r.colliding = false;
                                 userAnswer = "C";
-                                //console.log("YUH3");
                                 displayAnswers();
                             }
                         }
@@ -246,40 +275,24 @@ loop = function () {
                 }
             }
         }
-
         ctx.fillStyle = "#202020";
-        ctx.fillRect(0, 0, 1000, 500); // x, y, width, height
+        ctx.fillRect(0, 200, 1000, 300); // x, y, width, height
+        ctx.fillStyle = "#202830"
+        ctx.fillRect(0, 0, 1000, 200);
         ctx.fillStyle = "#FF0000"; // hex for red
         ctx.beginPath();
         ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
         ctx.strokeStyle = "#202830";
         ctx.lineWidth = 4;
+        ctx.fillStyle = "#FFFFFF";
         ctx.beginPath();
         ctx.moveTo(0, 420);
         ctx.lineTo(1000, 420);
         ctx.stroke();
-        ctx.strokeStyle = "#FF0000";
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(130, 155);
-        ctx.lineTo(170, 155);
-        ctx.moveTo(490, 155);
-        ctx.lineTo(530, 155);
-        ctx.moveTo(840, 155);
-        ctx.lineTo(882, 155);
-        ctx.stroke();
-        ctx.fillStyle = "#FFFFFF";
-        //ctx.fillRect(hitBox2.x, hitBox2.y, hitBox2.width, hitBox2.height)
-        ctx.strokeStyle = "#202830";
-        ctx.lineWidth = 4;
-        ctx.fillStyle = "#FFFFFF";
-        //ctx.fillRect(hitBox3.x, hitBox3.y, hitBox3.width, hitBox3.height)
-        ctx.strokeStyle = "#202830";
-        ctx.lineWidth = 4;
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(hitBox1[i].hitX, hitBox1[i].y, hitBox1[i].width, hitBox1[i].height);
-        ctx.fillRect(hitBox2[i].hitX, hitBox2[i].y, hitBox2[i].width, hitBox2[i].height);
-        ctx.fillRect(hitBox3[i].hitX, hitBox3[i].y, hitBox3[i].width, hitBox3[i].height);
+    }
+
+    while (questionsPosition == questions.length + 1) {
+        endGame();
     }
 
     // call update when the browser is ready to draw again
