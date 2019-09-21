@@ -4,7 +4,6 @@ body {
 
 #canvas {
     border: 5px solid #000000;
-    background: #FFFFFF;
     height: 36vw;
     margin-left: 13.5vw;
     margin-top: 3.5vw;
@@ -15,5 +14,13 @@ h1 {
     text-align: center;
     font-size: 3vw;
     padding: -5vw;
-    color: rgb(245, 244, 244);
+    color: #FFFFFF;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.7vw;
+    padding: -5vw;
+    margin-bottom: -2vw;
+    color: #FFFFFF;
 }

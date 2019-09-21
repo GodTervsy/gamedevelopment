@@ -2,40 +2,45 @@ let ctx, controller, loop;
 let score = 0;
 let userAnswer = "";
 ctx = document.querySelector("canvas").getContext("2d");
+let scoreText = document.getElementById("scoreText");
 
 ctx.canvas.height = 500;
 ctx.canvas.width = 1000;
 
+//Defining the properties for the hitbox of the first solution that appears on screen. These properties include id, x and y positions, height, width, text value and hitbox area.
 let hitBox1 = [{
     "id": "value1",
     "x": 150,
     "y": 150,
     "height": 1,
     "width": 200,
-    "text": "123",
+    "text": "",
     "hitX": 50
 }];
 
+//Defining the properties for the hitbox of the second solution that appears on screen. These properties include id, x and y positions, height, width, text value and hitbox area.
 let hitBox2 = [{
     "id": "value2",
     "x": 500,
     "y": 150,
     "height": 1,
     "width": 200,
-    "text": "2498",
+    "text": "",
     "hitX": 400
 }];
 
+//Defining the properties for the hitbox of the third solution that appears on screen. These properties include id, x and y positions, height, width, text value and hitbox area.
 let hitBox3 = [{
     "id": "value3",
     "x": 850,
     "y": 150,
     "height": 1,
     "width": 200,
-    "text": "238947",
+    "text": "",
     "hitX": 750
 }];
 
+//Defining the properties for the player character that appears on screen.
 let rectangle = [{
 
     "x": 500, // center of the canvas
@@ -49,13 +54,15 @@ let rectangle = [{
 
 }];
 
+//Storing the text for each hitbox in a multidimensional array. Each array within the parent array contains the text for each hitbox. For example, the first array within the parent array corresponds to hitBox 1.
 let solutions = [
     ["The gradient of that function", "5x + 6", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "62.402", "Distance"],
     ["The position of the function on the graph", "0", "A coordinate on a curve", "89x + c", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
     ["A parallel function", "6x + 5", "The area under the curve", "89x", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "√-1", "Circular Motion"]
 ];
 
-let paragraphText = [
+//Defining the basic position for where each question appears in terms of x and y coordinates.
+let questionText = [
 
     {
         "x": 500,
@@ -64,6 +71,7 @@ let paragraphText = [
     }
 ];
 
+//Storing all questions in an array. This makes it easier to cycle through the questions in the quiz.
 let questions = [
     "In calculus, what does differentiating a function find?",
     "Differentiate the following expression: 3x^2 + 5x + 10",
@@ -76,16 +84,18 @@ let questions = [
     "If a function for the velocity of an object is integrated, what resulting function is found?"
 ];
 
-let questionsPosition = questions.indexOf("In calculus, what does differentiating a function find?");
-
+//Storing the answers to each question in the form of an array.
 let answers = ["Start", "A", "C", "C", "B", "B", "B", "A", "C", "A"];
-let answersPosition = answers.indexOf("Start");
 
+//Defining the starting position of each array shown above in different variables.
+let questionsPosition = questions.indexOf("In calculus, what does differentiating a function find?");
+let answersPosition = answers.indexOf("Start");
 let solutionsPosition1 = solutions[0].indexOf("The gradient of that function");
 let solutionsPosition2 = solutions[1].indexOf("The position of the function on the graph");
 let solutionsPosition3 = solutions[2].indexOf("A parallel function");
 
 
+//Adding functionality to the player character and setting up key events (left and right movement, jumping).
 controller = {
 
     left: false,
@@ -97,11 +107,11 @@ controller = {
 
         switch (event.keyCode) {
 
+            case 32: // space key
+                controller.up = key_state;
+                break;
             case 37: // left key
                 controller.left = key_state;
-                break;
-            case 38: // up key
-                controller.up = key_state;
                 break;
             case 39: // right key
                 controller.right = key_state;
@@ -117,33 +127,36 @@ loop = function () {
 
     for (let i = 0; i < rectangle.length; i++) {
 
+        //If the rectangle is jumping, set the "jumping" and "colliding" properties to be true and also set the "y velocity".
         if (controller.up && rectangle[i].jumping == false) {
 
-            rectangle[i].y_velocity -= 60;
+            rectangle[i].y_velocity -= 48;
             rectangle[i].jumping = true;
-            rectangle[i].colliding = true;
+            rectangle[i].colliding = true; //This property will ensure that the hit detection is only fired once as soon as the player and hitbox overlap.
 
         }
 
+        //If the left key is being pressed, set the horizontal speed of the rectangle to be a negative number. The negative sign indicates that it will be travelling to the left.
         if (controller.left) {
 
             rectangle[i].x_velocity -= 0.5;
-
         }
 
+        //If the right key is being pressed, set the horizontal speed of the rectangle to be a positive number. The positive sign indicates that it will be travelling to the right.
         if (controller.right) {
 
             rectangle[i].x_velocity += 0.5;
 
         }
 
-        rectangle[i].y_velocity += 1.5; // gravity
-        rectangle[i].x += rectangle[i].x_velocity;
-        rectangle[i].y += rectangle[i].y_velocity;
-        rectangle[i].x_velocity *= 0.9; // friction
-        rectangle[i].y_velocity *= 0.9; // friction
 
-        // if rectangle is falling below floor line
+        rectangle[i].y_velocity += 1.5; //Setting the gravity for the player.
+        rectangle[i].x += rectangle[i].x_velocity; //Ensuring the player's horizontal position on the screen adapts according to the horizontal velocity of the player.
+        rectangle[i].y += rectangle[i].y_velocity; //Ensuring the player's vertical position on the screen adapts according to the vertical velocity of the player.
+        rectangle[i].x_velocity *= 0.9; //Setting friction for the player while travelling horizontally on the ground.
+        rectangle[i].y_velocity *= 0.9; //Setting air resistance for the player while travelling vertically.
+
+        //Accounting for the boundary case of the player falling below the floor line.
         if (rectangle[i].y > 415 - 16 - 32) {
 
             rectangle[i].jumping = false;
@@ -152,18 +165,21 @@ loop = function () {
 
         }
 
-        // if rectangle is going off the left of the screen
+        //Accounting for the boundary case of the player travelling off the left side of the screen. In this case, the horizontal position of the player is set to the right side of the screen. This allows for the effect of the player disappearing on the left and then reappearing on the right.
         if (rectangle[i].x < -32) {
 
             rectangle[i].x = 1000;
 
-        } else if (rectangle[i].x > 1000) { // if rectangle goes past right boundary
+        }
+        //Accounting for the boundary case of the player travelling off the right side of the screen. In this case, the horizontal position of the player is set to the left side of the screen. This allows for the effect of the player disappearing on the right and then reappearing on the left. 
+        else if (rectangle[i].x > 1000) {
 
             rectangle[i].x = -32;
 
         }
 
-        function renderSolutions() {
+        //The renderText() function changes the text of the hitboxes, question and score. This function is executed every time a collision is detected.
+        function renderText() {
 
             for (let i = 0; i < hitBox1.length; i++) {
                 ctx.font = "20px Arial";
@@ -183,12 +199,15 @@ loop = function () {
                 ctx.fillText(hitBox3[i].text, hitBox3[i].x, hitBox3[i].y);
             }
 
-            for (let i = 0; i < paragraphText.length; i++) {
+            for (let i = 0; i < questionText.length; i++) {
                 ctx.font = "25px Arial"
-                ctx.fillText(paragraphText[i].text, paragraphText[i].x, paragraphText[i].y);
+                ctx.fillText(questionText[i].text, questionText[i].x, questionText[i].y);
             }
+
+            scoreText.innerText = "Score: " + score;
         }
 
+        //The endGame() function displays alert messages to the player once all questions have been answered. A custom message appears if the player achieves a perfect score.
         function endGame() {
             if (score == 9) {
                 if (
@@ -196,12 +215,13 @@ loop = function () {
                         "Outstanding performace!\nYou got " + score + " out of " + questions.length + "!" + "\nThanks for playing!\nIf you would like to play again, please click 'OK'. Otherwise, click cancel, or exit the browser tab."
                     )
                 ) {
-                    questionsPosition = 1;
-                    location.reload();
+                    questionsPosition = 1; //Sets the position of the questions array to the beginning, in the event that the player plays the game again.
+                    location.reload(); //Reloads the active tab, essentially resetting the game.
                 } else {
+                    //This while loop accounts for the boundary case of the player being able to continue playing the game despite there being no questions to answer. The loop does not allow the player to close the alert without either exiting the tab or playing the game again.
                     while (questionsPosition == questions.length) {
                         alert(
-                            "Thanks for playing!\nIf you'd like to play again, please refresh the page (press F5).\nIf you do not want to play again, exit the browser tab."
+                            "Thanks for playing!\nIf you'd like to play again, please refresh the page (press F5).\nIf you do not want to play again, please exit the browser tab."
                         );
                     }
                 }
@@ -215,26 +235,27 @@ loop = function () {
                     location.reload();
                 } else {
                     while (questionsPosition == questions.length) {
-                        alert("Thanks for playing!\nIf you'd like to play again, please refresh the page (press F5).\nIf you do not want to play again, exit the browser tab.");
+                        alert("Thanks for playing!\nIf you'd like to play again, please refresh the page (press F5).\nIf you do not want to play again, please exit the browser tab.");
                     }
                 }
             }
         }
 
+        //The hitDetect() function contains the algorithm for the hit detection.
         function hitDetect() {
 
             for (let i = 0; i < hitBox1.length; i++) {
                 for (let i = 0; i < hitBox2.length; i++) {
                     for (let i = 0; i < hitBox3.length; i++) {
-                        for (let i = 0; i < paragraphText.length; i++) {
+                        for (let i = 0; i < questionText.length; i++) {
                             let h1 = hitBox1[i];
                             let h2 = hitBox2[i];
                             let h3 = hitBox3[i];
                             let r = rectangle[i];
-                            let p = paragraphText[i];
+                            let p = questionText[i];
 
+                            //The displayAnswers() function changes the text of the hitboxes to display the next possible options for the next question. It also changes the question text to be the next question.
                             function displayAnswers() {
-                                //console.log(answers[answersPosition])
                                 h1.text = solutions[0][solutionsPosition1];
                                 solutionsPosition1++;
 
@@ -247,17 +268,18 @@ loop = function () {
                                 p.text = questions[questionsPosition];
                                 questionsPosition++;
 
+                                //If the player's answer is the correct answer, add one to the score and then advance the position of the answers array by one. Otherwise, only advance the answers array.
                                 if (userAnswer == answers[answersPosition]) {
                                     score++;
-                                    console.log(score);
-                                } else {
-                                    console.log(score);
                                 }
                                 answersPosition++;
+
+
                             }
 
 
-                            if (h1.hitX < r.x + r.width && h1.hitX + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) {
+                            //If the player is colliding with any of the hitboxes, set the "colliding" property to false, define the player's answer and call the displayAnswers() function.
+                            if (h1.hitX < r.x + r.width && h1.hitX + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) { //Collision is calculated using x, y, width and height values of the hitboxes and player.
                                 r.colliding = false;
                                 userAnswer = "A";
                                 displayAnswers();
@@ -276,8 +298,8 @@ loop = function () {
             }
         }
         ctx.fillStyle = "#202020";
-        ctx.fillRect(0, 200, 1000, 300); // x, y, width, height
-        ctx.fillStyle = "#202830"
+        ctx.fillRect(0, 0, 1000, 500); // x, y, width, height
+        ctx.fillStyle = "#202830";
         ctx.fillRect(0, 0, 1000, 200);
         ctx.fillStyle = "#FF0000"; // hex for red
         ctx.beginPath();
@@ -296,7 +318,7 @@ loop = function () {
     }
 
     // call update when the browser is ready to draw again
-    renderSolutions();
+    renderText();
     hitDetect();
     window.requestAnimationFrame(loop);
 
