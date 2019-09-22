@@ -1,9 +1,10 @@
-let ctx, controller, loop;
-let score = 0;
-let userAnswer = "";
-ctx = document.querySelector("canvas").getContext("2d");
-let scoreText = document.getElementById("scoreText");
+let ctx, controller, runGame; //Defining intial variables for the context of the canvas, the controller element and the function that runs the game.
+let score = 0; //Setting the intial score to be 0.
+let userAnswer = ""; //Setting the initial user's answer to be blank, or undefined.
+ctx = document.querySelector("canvas").getContext("2d"); //Referencing the HTML canvas element and storing it in the variable "ctx".
+let scoreText = document.getElementById("scoreText"); //Referencing the HTML "h2" element which displays the score and storing this in the variable "scoreText".
 
+//Defining the height and width of the canvas.
 ctx.canvas.height = 500;
 ctx.canvas.width = 1000;
 
@@ -56,9 +57,9 @@ let rectangle = [{
 
 //Storing the text for each hitbox in a multidimensional array. Each array within the parent array contains the text for each hitbox. For example, the first array within the parent array corresponds to hitBox 1.
 let solutions = [
-    ["The gradient of that function", "5x + 6", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "62.402", "Distance"],
-    ["The position of the function on the graph", "0", "A coordinate on a curve", "89x + c", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
-    ["A parallel function", "6x + 5", "The area under the curve", "89x", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "√-1", "Circular Motion"]
+    ["Isaac Newton and Leibniz", "Complex Numbers", "The gradient of that function", "5x + 6", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "62.402", "Distance"],
+    ["Pythagoras and Achimedes", "Integration", "The position of the function on the graph", "0", "A coordinate on a curve", "89x + c", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
+    ["Isaac Newton and Albert Einstein", "Differentiation", "A parallel function", "6x + 5", "The area under the curve", "89x", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "√-1", "Circular Motion"]
 ];
 
 //Defining the basic position for where each question appears in terms of x and y coordinates.
@@ -73,6 +74,8 @@ let questionText = [
 
 //Storing all questions in an array. This makes it easier to cycle through the questions in the quiz.
 let questions = [
+    "Who is said to be the two \"Founding Fathers\" of Calculus?",
+    "What area of calculus did Isaac Newton mainly contribute to?",
     "In calculus, what does differentiating a function find?",
     "Differentiate the following expression: 3x^2 + 5x + 10",
     "In calculus, what does integrating a function find?",
@@ -85,14 +88,14 @@ let questions = [
 ];
 
 //Storing the answers to each question in the form of an array.
-let answers = ["Start", "A", "C", "C", "B", "B", "B", "A", "C", "A"];
+let answers = ["Start", "A", "C", "A", "C", "C", "B", "B", "B", "A", "C", "A"];
 
 //Defining the starting position of each array shown above in different variables.
-let questionsPosition = questions.indexOf("In calculus, what does differentiating a function find?");
+let questionsPosition = questions.indexOf("Who is said to be the two \"Founding Fathers\" of Calculus?");
 let answersPosition = answers.indexOf("Start");
-let solutionsPosition1 = solutions[0].indexOf("The gradient of that function");
-let solutionsPosition2 = solutions[1].indexOf("The position of the function on the graph");
-let solutionsPosition3 = solutions[2].indexOf("A parallel function");
+let solutionsPosition1 = solutions[0].indexOf("Isaac Newton and Leibniz");
+let solutionsPosition2 = solutions[1].indexOf("Pythagoras and Achimedes");
+let solutionsPosition3 = solutions[2].indexOf("Isaac Newton and Albert Einstein");
 
 
 //Adding functionality to the player character and setting up key events (left and right movement, jumping).
@@ -123,7 +126,7 @@ controller = {
 
 };
 
-loop = function () {
+runGame = function () {
 
     for (let i = 0; i < rectangle.length; i++) {
 
@@ -207,9 +210,10 @@ loop = function () {
             scoreText.innerText = "Score: " + score;
         }
 
-        //The endGame() function displays alert messages to the player once all questions have been answered. A custom message appears if the player achieves a perfect score.
+        //The endGame() function displays alert messages to the player once all questions have been answered. A custom message appears if the player achieves a perfect score. A confirm window is used in order to handle different button events (in this case, the "OK" button and the "Cancel" button).
         function endGame() {
-            if (score == 9) {
+            if (score == questions.length) {
+                //If the player clicks the "OK" button in the confirm window, reset the position of the questions array and reload the page.
                 if (
                     window.confirm(
                         "Outstanding performace!\nYou got " + score + " out of " + questions.length + "!" + "\nThanks for playing!\nIf you would like to play again, please click 'OK'. Otherwise, click cancel, or exit the browser tab."
@@ -217,6 +221,8 @@ loop = function () {
                 ) {
                     questionsPosition = 1; //Sets the position of the questions array to the beginning, in the event that the player plays the game again.
                     location.reload(); //Reloads the active tab, essentially resetting the game.
+
+                    //If the player cliks the "Cancel" button in the confirm window, run a loop that does not allow further playing of the game, since it has ended.
                 } else {
                     //This while loop accounts for the boundary case of the player being able to continue playing the game despite there being no questions to answer. The loop does not allow the player to close the alert without either exiting the tab or playing the game again.
                     while (questionsPosition == questions.length) {
@@ -225,7 +231,8 @@ loop = function () {
                         );
                     }
                 }
-            } else if (score <= 8) {
+                //Generic message that displays if any score below perfect score is achieved. The same confirm window mechanism is utilised for this process.
+            } else if (score < questions.length) {
                 if (
                     window.confirm(
                         "That's the end of the quiz!\nYou got " + score + " out of " + questions.length + "!" + "\nThanks for playing!\nIf you would like to play again and get a perfect score, please click 'OK'. Otherwise, click cancel or exit the browser tab."
@@ -256,19 +263,19 @@ loop = function () {
 
                             //The displayAnswers() function changes the text of the hitboxes to display the next possible options for the next question. It also changes the question text to be the next question.
                             function displayAnswers() {
-                                h1.text = solutions[0][solutionsPosition1];
+                                h1.text = solutions[0][solutionsPosition1]; //Referencing the position of the first hitBox's solutions in the multidimensional array.
                                 solutionsPosition1++;
 
-                                h2.text = solutions[1][solutionsPosition2];
+                                h2.text = solutions[1][solutionsPosition2]; //Referencing the position of the second hitBox's solutions in the multidimensional array.
                                 solutionsPosition2++;
 
-                                h3.text = solutions[2][solutionsPosition3];
+                                h3.text = solutions[2][solutionsPosition3]; //Referencing the position of the third hitBox's solutions in the multidimensional array.
                                 solutionsPosition3++;
 
-                                p.text = questions[questionsPosition];
+                                p.text = questions[questionsPosition]; //Referencing the position of the questions in the questions array.
                                 questionsPosition++;
 
-                                //If the player's answer is the correct answer, add one to the score and then advance the position of the answers array by one. Otherwise, only advance the answers array.
+                                //If the player's answer is the correct answer, add one to the score and then advance the position of the answers array by one. Otherwise, only advance the position of the answers array.
                                 if (userAnswer == answers[answersPosition]) {
                                     score++;
                                 }
@@ -280,16 +287,16 @@ loop = function () {
 
                             //If the player is colliding with any of the hitboxes, set the "colliding" property to false, define the player's answer and call the displayAnswers() function.
                             if (h1.hitX < r.x + r.width && h1.hitX + h1.width > r.x && h1.y < r.y + r.height && h1.y + h1.height > r.y && r.colliding == true) { //Collision is calculated using x, y, width and height values of the hitboxes and player.
-                                r.colliding = false;
-                                userAnswer = "A";
+                                r.colliding = false; //This property ensures that the collision is detected only once, to prevent multiple answers being chosen during one jump.
+                                userAnswer = "A"; //Setting the player's answer to be "A".
                                 displayAnswers();
                             } else if (h2.hitX < r.x + r.width && h2.hitX + h2.width > r.x && h2.y < r.y + r.height && h2.y + h2.height > r.y && r.colliding == true) {
                                 r.colliding = false;
-                                userAnswer = "B";
+                                userAnswer = "B"; //Setting the player's answer to be "B".
                                 displayAnswers();
                             } else if (h3.hitX < r.x + r.width && h3.hitX + h3.width > r.x && h3.y < r.y + r.height && h3.y + h3.height > r.y && r.colliding == true) {
                                 r.colliding = false;
-                                userAnswer = "C";
+                                userAnswer = "C"; //Setting the player's answer to be "C".
                                 displayAnswers();
                             }
                         }
@@ -297,33 +304,40 @@ loop = function () {
                 }
             }
         }
+        //Setting the background colour of the playing area.
         ctx.fillStyle = "#202020";
-        ctx.fillRect(0, 0, 1000, 500); // x, y, width, height
+        ctx.fillRect(0, 0, 1000, 500);
+
+        //Setting a different background colour for the questions and answers, to make it easier to differentiate between these.
         ctx.fillStyle = "#202830";
         ctx.fillRect(0, 0, 1000, 200);
-        ctx.fillStyle = "#FF0000"; // hex for red
-        ctx.beginPath();
+
+        //Drawing the player character.
+        ctx.fillStyle = "#FF0000";
         ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
+
+        //Drawing the floor line seen at the bottom of the play area.
         ctx.strokeStyle = "#202830";
         ctx.lineWidth = 4;
         ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
         ctx.moveTo(0, 420);
         ctx.lineTo(1000, 420);
         ctx.stroke();
     }
 
+    //Calling the endGame() function when all questions have been asked.
     while (questionsPosition == questions.length + 1) {
         endGame();
     }
 
-    // call update when the browser is ready to draw again
+    //Calling each function in order to update the game state when the browser is ready to draw again.
     renderText();
     hitDetect();
-    window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(runGame);
 
 };
 
+//Adding event listeners for key presses, and calling an animation frame for the game.
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
-window.requestAnimationFrame(loop);
+window.requestAnimationFrame(runGame);
