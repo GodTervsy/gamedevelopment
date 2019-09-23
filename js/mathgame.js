@@ -57,9 +57,9 @@ let rectangle = [{
 
 //Storing the text for each hitbox in a multidimensional array. Each array within the parent array contains the text for each hitbox. For example, the first array within the parent array corresponds to hitBox 1.
 let solutions = [
-    ["Isaac Newton and Leibniz", "Complex Numbers", "The gradient of that function", "5x + 6", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "62.402", "Distance"],
-    ["Pythagoras and Achimedes", "Integration", "The position of the function on the graph", "0", "A coordinate on a curve", "89x + c", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
-    ["Isaac Newton and Albert Einstein", "Differentiation", "A parallel function", "6x + 5", "The area under the curve", "89x", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "√-1", "Circular Motion"]
+    ["Isaac Newton and Leibniz", "Complex Numbers", "The gradient of that function", "5x + 6", "15x - 9", "A cubic function", "98x", "A really small number", "a^2 - 4bc", "The Chain Rule", "62.402", "Distance"],
+    ["Pythagoras and Achimedes", "Integration", "The position of the function on the graph", "0", "30(5x - 5) + 6", "A coordinate on a curve", "89x + c", "A letter representing a given number", "b^2 - 4ac", "Einstein's Rule", "π", "Acceleration"],
+    ["Isaac Newton and Albert Einstein", "Differentiation", "A parallel function", "6x + 5", "75x + 6", "The area under the curve", "89x", "The second derivative", "c^2 - 4ab", "The Planck's Constant Rule", "√-1", "Circular Motion"]
 ];
 
 //Defining the basic position for where each question appears in terms of x and y coordinates.
@@ -78,6 +78,7 @@ let questions = [
     "What area of calculus did Isaac Newton mainly contribute to?",
     "In calculus, what does differentiating a function find?",
     "Differentiate the following expression: 3x^2 + 5x + 10",
+    "Differentiate the following expression: 3(5x-5)^2 + 6x",
     "In calculus, what does integrating a function find?",
     "Integrate the following expression: ∫89 dx",
     "What is the integration constant, c?",
@@ -88,7 +89,7 @@ let questions = [
 ];
 
 //Storing the answers to each question in the form of an array.
-let answers = ["Start", "A", "C", "A", "C", "C", "B", "B", "B", "A", "C", "A"];
+let answers = ["Start", "A", "C", "A", "C", "B", "C", "B", "B", "B", "A", "C", "A"];
 
 //Defining the starting position of each array shown above in different variables.
 let questionsPosition = questions.indexOf("Who is said to be the two \"Founding Fathers\" of Calculus?");
@@ -96,6 +97,8 @@ let answersPosition = answers.indexOf("Start");
 let solutionsPosition1 = solutions[0].indexOf("Isaac Newton and Leibniz");
 let solutionsPosition2 = solutions[1].indexOf("Pythagoras and Achimedes");
 let solutionsPosition3 = solutions[2].indexOf("Isaac Newton and Albert Einstein");
+
+alert("Welcome to the game!\nThis game inlcudes multiple-choice questions about Level 2 and 3 Calculus. \nMove the player character using the arrow keys on the keyboard, and jump to answers using the either the spacebar or the up arrow key.\nGood luck!")
 
 
 //Adding functionality to the player character and setting up key events (left and right movement, jumping).
@@ -115,6 +118,9 @@ controller = {
                 break;
             case 37: // left key
                 controller.left = key_state;
+                break;
+            case 38:
+                controller.up = key_state;
                 break;
             case 39: // right key
                 controller.right = key_state;
