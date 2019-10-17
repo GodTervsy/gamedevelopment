@@ -3,6 +3,8 @@ let score = 0; //Setting the intial score to be 0.
 let userAnswer = ""; //Setting the initial user's answer to be blank, or undefined.
 ctx = document.querySelector("canvas").getContext("2d"); //Referencing the HTML canvas element and storing it in the variable "ctx".
 let scoreText = document.getElementById("scoreText"); //Referencing the HTML "h2" element which displays the score and storing this in the variable "scoreText".
+let characterRunning = new Image();
+characterRunning.src = "/images/Run (6).png";
 
 //Defining the height and width of the canvas.
 ctx.canvas.height = 500;
@@ -74,7 +76,7 @@ let questionText = [
 
 //Storing all questions in an array. This makes it easier to cycle through the questions in the quiz.
 let questions = [
-    "Who is said to be the two \"Founding Fathers\" of Calculus?",
+    "Who are said to be the two \"Founding Fathers\" of Calculus?",
     "What area of calculus did Isaac Newton mainly contribute to?",
     "In calculus, what does differentiating a function find?",
     "Differentiate the following expression: 3x^2 + 5x + 10",
@@ -92,7 +94,7 @@ let questions = [
 let answers = ["Start", "A", "C", "A", "C", "B", "C", "B", "B", "B", "A", "C", "A"];
 
 //Defining the starting position of each array shown above in different variables.
-let questionsPosition = questions.indexOf("Who is said to be the two \"Founding Fathers\" of Calculus?");
+let questionsPosition = questions.indexOf("Who are said to be the two \"Founding Fathers\" of Calculus?");
 let answersPosition = answers.indexOf("Start");
 let solutionsPosition1 = solutions[0].indexOf("Isaac Newton and Leibniz");
 let solutionsPosition2 = solutions[1].indexOf("Pythagoras and Achimedes");
@@ -142,6 +144,7 @@ runGame = function () {
             rectangle[i].y_velocity -= 48;
             rectangle[i].jumping = true;
             rectangle[i].colliding = true; //This property will ensure that the hit detection is only fired once as soon as the player and hitbox overlap.
+            //ctx.drawImage(characterRunning, rectangle[i].x, rectangle[i].y);
 
         }
 
@@ -255,7 +258,7 @@ runGame = function () {
         }
 
         //The hitDetect() function contains the algorithm for the hit detection.
-        function hitDetect() {
+        function hitDetect(displayAnswers) {
 
             for (let i = 0; i < hitBox1.length; i++) {
                 for (let i = 0; i < hitBox2.length; i++) {
@@ -321,6 +324,7 @@ runGame = function () {
         //Drawing the player character.
         ctx.fillStyle = "#FF0000";
         ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
+        //ctx.drawImage(characterRunning, rectangle[i].x, rectangle[i].y, 120, 120);
 
         //Drawing the floor line seen at the bottom of the play area.
         ctx.strokeStyle = "#202830";
