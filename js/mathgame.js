@@ -1,12 +1,21 @@
-let ctx, controller, runGame; //Defining intial variables for the context of the canvas, the controller element and the function that runs the game.
+let controller, runGame; //Defining intial variables for the controller element and the function that runs the game.
 let score = 0; //Setting the intial score to be 0.
 let userAnswer = ""; //Setting the initial user's answer to be blank, or undefined.
-ctx = document.querySelector("canvas").getContext("2d"); //Referencing the HTML canvas element and storing it in the variable "ctx".
+let animationCanvas = document.getElementById("animationCanvas"); //Referencing the canvas used for animation and storing it in the variable "animationCanvas".
+animationCTX = animationCanvas.getContext("2d"); //Getting the context for the animation canvas and storing it in the variable "animationCTX".
+let backgroundCanvas = document.getElementById("canvas"); //Referencing the canvas used for the background and storing it in the variable "backgroundCanvas".
+ctx = backgroundCanvas.getContext("2d"); //Getting the context for the background canvas and storing it in the variable "ctx".
 let scoreText = document.getElementById("scoreText"); //Referencing the HTML "h2" element which displays the score and storing this in the variable "scoreText".
+
+//Defining and sourcing image elements for each sprite.
 let characterRunningLeft = new Image();
-characterRunningLeft.src = "/images/runningright.png";
-let characterJumping = new Image();
-characterJumping.src = "/images/jumping.png";
+characterRunningLeft.src = "/images/runningleft.png";
+let characterRunningRight = new Image();
+characterRunningRight.src = "/images/runningright.png";
+let characterJumpingLeft = new Image();
+characterJumpingLeft.src = "/images/jumpingleft.png";
+let characterJumpingRight = new Image();
+characterJumpingRight.src = "/images/jumpingright.png";
 
 //Defining the height and width of the canvas.
 ctx.canvas.height = 500;
@@ -117,16 +126,16 @@ controller = {
 
         switch (event.keyCode) {
 
-            case 32: // space key
+            case 32: //space key
                 controller.up = key_state;
                 break;
-            case 37: // left key
+            case 37: //left key
                 controller.left = key_state;
                 break;
-            case 38:
+            case 38: //up key
                 controller.up = key_state;
                 break;
-            case 39: // right key
+            case 39: //right key
                 controller.right = key_state;
                 break;
 
@@ -146,8 +155,6 @@ runGame = function () {
             rectangle[i].y_velocity -= 48;
             rectangle[i].jumping = true;
             rectangle[i].colliding = true; //This property will ensure that the hit detection is only fired once as soon as the player and hitbox overlap.
-
-
         }
 
         //If the left key is being pressed, set the horizontal speed of the rectangle to be a negative number. The negative sign indicates that it will be travelling to the left.
@@ -323,23 +330,34 @@ runGame = function () {
         ctx.fillStyle = "#202830";
         ctx.fillRect(0, 0, 1000, 200);
 
-        //Drawing the player character.
-        ctx.fillStyle = "#FF0000";
-        //ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
-        ctx.drawImage(characterRunningLeft, rectangle[i].x, rectangle[i].y, 120, 120);
-        if (rectangle[i].jumping == true) {
-            ctx.drawImage(characterJumping, rectangle[i].x, rectangle[i].y, 120, 150);
-            ctx.clearRect(characterJumping, rectangle[i].x, rectangle[i].y, 120, 150);
-        } else if (controller.left) {
-            ctx.drawImage(characterRunningLeft, rectangle[i].x, rectangle[i].y, 120, 120);
+        //Drawing the initial player character at the top of the screen.
+        if (rectangle[i].jumping == true && rectangle[i].x_velocity == 0) {
+            animationCTX.clearRect(0, 0, 1000, 500);
+            animationCTX.drawImage(characterRunningRight, rectangle[i].x, rectangle[i].y, 120, 120);
+        }
+        //Setting the sprite image depending on if the player is jumping or walking left or right.
+        if (rectangle[i].jumping == true && rectangle[i].x_velocity > 0) {
+            animationCTX.clearRect(0, 0, 1000, 500);
+            animationCTX.drawImage(characterJumpingRight, rectangle[i].x, rectangle[i].y, 120, 150);
+            animationCTX.clearRect(characterJumpingRight, rectangle[i].x, rectangle[i].y, 120, 150);
+        } else if (rectangle[i].jumping == true && rectangle[i].x_velocity < 0) {
+            animationCTX.clearRect(0, 0, 1000, 500);
+            animationCTX.drawImage(characterJumpingLeft, rectangle[i].x, rectangle[i].y, 120, 150);
+            animationCTX.clearRect(characterJumpingLeft, rectangle[i].x, rectangle[i].y, 120, 150);
+        } else if (controller.left || rectangle[i].x_velocity < 0) {
+            animationCTX.clearRect(0, 0, 1000, 500);
+            animationCTX.drawImage(characterRunningLeft, rectangle[i].x, rectangle[i].y, 120, 120);
+        } else if (controller.right || rectangle[i].x_velocity > 0) {
+            animationCTX.clearRect(0, 0, 1000, 500);
+            animationCTX.drawImage(characterRunningRight, rectangle[i].x, rectangle[i].y, 120, 120);
         }
 
         //Drawing the floor line seen at the bottom of the play area.
         ctx.strokeStyle = "#202830";
         ctx.lineWidth = 4;
         ctx.fillStyle = "#FFFFFF";
-        ctx.moveTo(0, 420);
-        ctx.lineTo(1000, 420);
+        ctx.moveTo(0, 480);
+        ctx.lineTo(1000, 480);
         ctx.stroke();
     }
 

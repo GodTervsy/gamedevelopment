@@ -4,19 +4,21 @@ body {
 }
 
 /*Defining properties of the canvas such as padding, margins a border and the height on the screen. The "vw" unit is used instead of pixels, in order to ensure a reponsive design.*/
-#canvas {
+/*#canvas {
     border: 5px solid #000000;
     height: 36vw;
     margin-left: 13.5vw;
     margin-top: 3.5vw;
     padding: -20vw;
-}
+}*/
 
 canvas {
     position: absolute;
+    border: 5px solid #000000;
+    height: 36vw;
     margin-left: 13.5vw;
     margin-top: 3.5vw;
-    height: 36vw;
+    padding: -20vw;
 }
 
 /*Defining the properties of the h1 element. These also use the "vw" unit.*/
