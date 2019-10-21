@@ -12,6 +12,13 @@ body {
     padding: -20vw;
 }
 
+canvas {
+    position: absolute;
+    margin-left: 13.5vw;
+    margin-top: 3.5vw;
+    height: 36vw;
+}
+
 /*Defining the properties of the h1 element. These also use the "vw" unit.*/
 h1 {
     text-align: center;

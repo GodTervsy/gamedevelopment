@@ -3,8 +3,10 @@ let score = 0; //Setting the intial score to be 0.
 let userAnswer = ""; //Setting the initial user's answer to be blank, or undefined.
 ctx = document.querySelector("canvas").getContext("2d"); //Referencing the HTML canvas element and storing it in the variable "ctx".
 let scoreText = document.getElementById("scoreText"); //Referencing the HTML "h2" element which displays the score and storing this in the variable "scoreText".
-let characterRunning = new Image();
-characterRunning.src = "/images/Run (6).png";
+let characterRunningLeft = new Image();
+characterRunningLeft.src = "/images/runningright.png";
+let characterJumping = new Image();
+characterJumping.src = "/images/jumping.png";
 
 //Defining the height and width of the canvas.
 ctx.canvas.height = 500;
@@ -47,9 +49,9 @@ let hitBox3 = [{
 let rectangle = [{
 
     "x": 500, // center of the canvas
-    "height": 50,
+    "height": 120,
     "jumping": true,
-    "width": 50,
+    "width": 120,
     "x_velocity": 0,
     "y": 0,
     "y_velocity": 0,
@@ -144,7 +146,7 @@ runGame = function () {
             rectangle[i].y_velocity -= 48;
             rectangle[i].jumping = true;
             rectangle[i].colliding = true; //This property will ensure that the hit detection is only fired once as soon as the player and hitbox overlap.
-            //ctx.drawImage(characterRunning, rectangle[i].x, rectangle[i].y);
+
 
         }
 
@@ -323,8 +325,14 @@ runGame = function () {
 
         //Drawing the player character.
         ctx.fillStyle = "#FF0000";
-        ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
-        //ctx.drawImage(characterRunning, rectangle[i].x, rectangle[i].y, 120, 120);
+        //ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
+        ctx.drawImage(characterRunningLeft, rectangle[i].x, rectangle[i].y, 120, 120);
+        if (rectangle[i].jumping == true) {
+            ctx.drawImage(characterJumping, rectangle[i].x, rectangle[i].y, 120, 150);
+            ctx.clearRect(characterJumping, rectangle[i].x, rectangle[i].y, 120, 150);
+        } else if (controller.left) {
+            ctx.drawImage(characterRunningLeft, rectangle[i].x, rectangle[i].y, 120, 120);
+        }
 
         //Drawing the floor line seen at the bottom of the play area.
         ctx.strokeStyle = "#202830";
