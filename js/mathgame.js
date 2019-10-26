@@ -322,7 +322,7 @@ runGame = function () {
                 }
             }
         }
-        //Setting the background colour of the playing area.
+        //Setting the background colour of the playing area on the background canvas.
         ctx.fillStyle = "#202020";
         ctx.fillRect(0, 0, 1000, 500);
 
@@ -330,16 +330,16 @@ runGame = function () {
         ctx.fillStyle = "#202830";
         ctx.fillRect(0, 0, 1000, 200);
 
-        //Drawing the initial player character at the top of the screen.
+        //Drawing the initial player sprite at the top of the screen.
         if (rectangle[i].jumping == true && rectangle[i].x_velocity == 0) {
             animationCTX.clearRect(0, 0, 1000, 500);
             animationCTX.drawImage(characterRunningRight, rectangle[i].x, rectangle[i].y, 120, 120);
         }
-        //Setting the sprite image depending on if the player is jumping or walking left or right.
+        //Setting the sprite image depending on if the player is jumping or walking, left or right.
         if (rectangle[i].jumping == true && rectangle[i].x_velocity > 0) {
-            animationCTX.clearRect(0, 0, 1000, 500);
-            animationCTX.drawImage(characterJumpingRight, rectangle[i].x, rectangle[i].y, 120, 150);
-            animationCTX.clearRect(characterJumpingRight, rectangle[i].x, rectangle[i].y, 120, 150);
+            animationCTX.clearRect(0, 0, 1000, 500); //Clear the animation canvas, keeping the background canvas intact.
+            animationCTX.drawImage(characterJumpingRight, rectangle[i].x, rectangle[i].y, 120, 150); //Draw the specific sprite image.
+            animationCTX.clearRect(characterJumpingRight, rectangle[i].x, rectangle[i].y, 120, 150); //Clear the previously drawn sprite image.
         } else if (rectangle[i].jumping == true && rectangle[i].x_velocity < 0) {
             animationCTX.clearRect(0, 0, 1000, 500);
             animationCTX.drawImage(characterJumpingLeft, rectangle[i].x, rectangle[i].y, 120, 150);
