@@ -9,13 +9,13 @@ let scoreText = document.getElementById("scoreText"); //Referencing the HTML "h2
 
 //Defining and sourcing image elements for each sprite.
 let characterRunningLeft = new Image();
-characterRunningLeft.src = "/images/runningleft.png";
+characterRunningLeft.src = "images/runningleft.png";
 let characterRunningRight = new Image();
-characterRunningRight.src = "/images/runningright.png";
+characterRunningRight.src = "images/runningright.png";
 let characterJumpingLeft = new Image();
-characterJumpingLeft.src = "/images/jumpingleft.png";
+characterJumpingLeft.src = "images/jumpingleft.png";
 let characterJumpingRight = new Image();
-characterJumpingRight.src = "/images/jumpingright.png";
+characterJumpingRight.src = "images/jumpingright.png";
 
 //Defining the height and width of the canvas.
 ctx.canvas.height = 500;
